@@ -7,12 +7,12 @@ function RHR_MOD.Log(msg)
 end
 
 function RHR_MOD.RoundFloat(number, decimalPlace)
-    local mult = math.pow(10, decimalPlace)
+    local mult =  math.pow(10, decimalPlace)
     return math.floor(number * mult + 0.5) / mult
 end
 
-function RHR_MOD.MinutesToHours(minutest)
-    return RHR_MOD.RoundFloat(minutes / 60)
+function RHR_MOD.MinutesToHours(minutes)
+    return RHR_MOD.RoundFloat(minutes / 60, 1)
 end
 
 function RHR_MOD.IsPlayerAlive(player)
@@ -29,18 +29,18 @@ function RHR_MOD.IsServerAdmin(player)
     return access == "admin"
 end
 
-function RHR_MOD.LoadServerSandboxVar()
-    RHR_MOD.ServerSandboxVars = {
+function RHR_MOD.LoadSandboxVars()
+    RHR_MOD.SSandboxVars = {
         StormAlertSound = SandboxVars.HordeRush.SoundType,
         StormAlertMessage = SandboxVars.HordeRush.StormAlertMessage,
         HordeRadius = SandboxVars.HordeRush.HordeRadius,
         HordeDistance = SandboxVars.HordeRush.HordeDistance,
-        MinCooldownPhaseDuration = SandboxVars.CBTS.MinCooldownPhaseDuration * 60 + 0.0,
-        MaxCooldownPhaseDuration = SandboxVars.CBTS.MaxCooldownPhaseDuration * 60 + 0.0,
-        MinCalmPhaseDuration = SandboxVars.CBTS.MinCalmPhaseDuration * 60 + 0.0,
-        MaxCalmPhaseDuration = SandboxVars.CBTS.MaxCalmPhaseDuration * 60 + 0.0,
-        MinStormPhaseDuration = SandboxVars.CBTS.MinStormPhaseDuration * 60 + 0.0,
-        MaxStormPhaseDuration = SandboxVars.CBTS.MaxStormPhaseDuration * 60 + 0.0,
+        MinCooldownPhaseDuration = SandboxVars.HordeRush.MinCooldownPhaseDuration * 60 + 0.0,
+        MaxCooldownPhaseDuration = SandboxVars.HordeRush.MaxCooldownPhaseDuration * 60 + 0.0,
+        MinCalmPhaseDuration = SandboxVars.HordeRush.MinCalmPhaseDuration * 60 + 0.0,
+        MaxCalmPhaseDuration = SandboxVars.HordeRush.MaxCalmPhaseDuration * 60 + 0.0,
+        MinStormPhaseDuration = SandboxVars.HordeRush.MinStormPhaseDuration * 60 + 0.0,
+        MaxStormPhaseDuration = SandboxVars.HordeRush.MaxStormPhaseDuration * 60 + 0.0,
         PlayerPositionOffset = SandboxVars.HordeRush.PlayerPositionOffset,
         MigrationNorth = SandboxVars.HordeRush.MigrateToNorth,
         MigrationEast = SandboxVars.HordeRush.MigrateToEast,
@@ -55,37 +55,32 @@ function RHR_MOD.LoadServerSandboxVar()
     }
 end
 
-function RHR_MOD.CycleDataToStr()
-    return "Counter=" .. tostring(RHR_MOD.ModData.Counter) .. " / FullCycle=" .. tostring(RHR_MOD.ModData.CooldownDuration + RHR_MOD.ModData.CalmDuration + RHR_MOD.ModData.StormDuration) .. " PlayerName=" .. tostring(RHR_MOD.ModData.PlayerName) .. " / PlayerSquare=" .. tostring(RHR_MOD.ModData.PlayerSquare)
+function RHR_MOD.CycleDataToStr(dataObj)
+    if not dataObj then return "No Data Set" end
+    return "Counter=" .. tostring(dataObj.Counter) .. " / Phases=[".. tostring(dataObj.CooldownDuration) .. "|" .. tostring(dataObj.CooldownDuration + dataObj.CalmDuration) .."|" .. tostring(dataObj.CooldownDuration + dataObj.CalmDuration + dataObj.StormDuration) .. "] / PlayerName=" .. tostring(dataObj.PlayerName) .. " / PlayerCoords=[" .. tostring(dataObj.PlayerX) .. "," .. tostring(dataObj.PlayerY) .. "]"
 end
 
 function RHR_MOD.ResetCycleData()
-    RHR_MOD.ModData = {
-        Counter = 0,
-        CooldownDuration = ZombRand(RHR_MOD.ServerSandboxVars.MinCooldownPhaseDuration, RHR_MOD.ServerSandboxVars.MaxCooldownPhaseDuration),
-        CalmDuration = ZombRand(RHR_MOD.ServerSandboxVars.MinCalmPhaseDuration, RHR_MOD.ServerSandboxVars.MaxCalmPhaseDuration),
-        StormDuration = ZombRand(RHR_MOD.ServerSandboxVars.MinStormPhaseDuration, RHR_MOD.ServerSandboxVars.MaxStormPhaseDuration),
-        PlayerName = nil,
-        PlayerSquare = nil
-    }
-    RHR_MOD.Log("ResetCycleData - " .. RHR_MOD.CycleDataToStr())
+    RHR_MOD.SModData.Counter = 0
+    RHR_MOD.SModData.CooldownDuration = ZombRand(RHR_MOD.SSandboxVars.MinCooldownPhaseDuration, RHR_MOD.SSandboxVars.MaxCooldownPhaseDuration)
+    RHR_MOD.SModData.CalmDuration = ZombRand(RHR_MOD.SSandboxVars.MinCalmPhaseDuration, RHR_MOD.SSandboxVars.MaxCalmPhaseDuration)
+    RHR_MOD.SModData.StormDuration = ZombRand(RHR_MOD.SSandboxVars.MinStormPhaseDuration, RHR_MOD.SSandboxVars.MaxStormPhaseDuration)
+    RHR_MOD.SModData.PlayerName = nil
+    RHR_MOD.SModData.PlayerX = nil
+    RHR_MOD.SModData.PlayerY = nil
+    RHR_MOD.SModData.LogCounter = 0
+    RHR_MOD.Log("ResetCycleData - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
 end
 
 
-function RHR_MOD.LoadServerData()
-    RHR_MOD.LoadServerSandboxVar()
+function RHR_MOD.LoadModData()
+    RHR_MOD.LoadSandboxVars()
 
-    if isClient() then
-        -- prevent client in multiplayer load local data
-        return
-    end
-
-    RHR_MOD.ModData = ModData.getOrCreate(RHR_DATAKEY)
-
-    if not RHR_MOD.ModData.CycleCounter then
+    RHR_MOD.SModData = ModData.getOrCreate(RHR_DATAKEY)
+    if not RHR_MOD.SModData.Counter then
         RHR_MOD.Log("No ModData Loaded")
         RHR_MOD.ResetCycleData()
     else
-        RHR_MOD.Log("ModData Loaded - " .. RHR_MOD.CycleDataToStr())
+        RHR_MOD.Log("ModData Loaded - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
     end
 end

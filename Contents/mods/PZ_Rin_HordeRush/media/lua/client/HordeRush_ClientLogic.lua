@@ -1,6 +1,6 @@
 require "HordeRush_Data"
 
-local WorldSoundManager = getWorldSoundManager():addSound()
+local WorldSoundManager = getWorldSoundManager()
 local BaseSoundManager = getSoundManager()
 
 local function makeNoise(x, y, radius)
@@ -13,12 +13,12 @@ end
 local function getHordeSquare(x, y, hordeDistance)
     local xMin = x - hordeDistance
     local xMax = x + hordeDistance
-    local yMin = y + hordeDistance
-    local yMax = y - hordeDistance
+    local yMin = y - hordeDistance
+    local yMax = y + hordeDistance
     return xMin, xMax, yMin, yMax
 end
 
-local function isPlayerInHordeArea(player, targetX, targetY, horderDistance)
+local function isPlayerInHordeArea(player, targetX, targetY, hordeDistance)
     if not player then return false end
 
     local playerSquare = player:getCurrentSquare()
@@ -26,13 +26,13 @@ local function isPlayerInHordeArea(player, targetX, targetY, horderDistance)
 
     local x = playerSquare:getX()
     local y = playerSquare:getY()
-    local xMin, xMax, yMin, yMax = getHordeSquare(targetX, targetY, horderDistance)
+    local xMin, xMax, yMin, yMax = getHordeSquare(targetX, targetY, hordeDistance * 2)
 
-    return  x >= xMin and x <= maxX and y >= yMin and y <= yMax
+    return  x >= xMin and x <= xMax and y >= yMin and y <= yMax
 end
 
 local function playStormSounds(targetX, targetY, hordeDistance)
-    if not RHR_MOD.ClientSandboxVars.StormAlertSound then
+    if not RHR_MOD.CSandboxVars.StormAlertSound then
         return
     end
 
@@ -71,50 +71,50 @@ function RHR_MOD.CalmPhaseStart()
     RHR_MOD.Log("Calm Phase Started!")
 end
 
-function RHR_MOD.CalmPhaseUpdate(targetSquare)
-    local hordeDistance = RHR_MOD.ClientSandboxVars.HordeDistance
-    local hordeRadius = RHR_MOD.ClientSandboxVars.HordeRadius
+function RHR_MOD.CalmPhaseUpdate()
+    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
+    local hordeRadius = RHR_MOD.CSandboxVars.HordeRadius
 
-    local targetX = targetSquare:getX()
-    local targetY = targetSquare:getY()
+    local targetX = RHR_MOD.CModData.PlayerX
+    local targetY = RHR_MOD.CModData.PlayerY
     local x1, x2, y1, y2 = getHordeSquare(targetX, targetY, hordeDistance)
 
-    if RHR_MOD.SandboxVars.MigrationNorth then makeNoise(targetX, y1, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationEast then makeNoise(x2, targetY, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationWest then makeNoise(x1, targetY, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationSouth then makeNoise(targetX, y2, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationNorthEast then makeNoise(x2, y1, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationNorthWest then makeNoise(x1, y1, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationSouthEast then makeNoise(x2, y2, hordeRadius) end
-    if RHR_MOD.SandboxVars.MigrationSouthWest then makeNoise(x1, y2, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationNorth then makeNoise(targetX, y1, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationEast then makeNoise(x2, targetY, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationWest then makeNoise(x1, targetY, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationSouth then makeNoise(targetX, y2, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationNorthEast then makeNoise(x2, y1, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationNorthWest then makeNoise(x1, y1, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationSouthEast then makeNoise(x2, y2, hordeRadius) end
+    if RHR_MOD.CSandboxVars.MigrationSouthWest then makeNoise(x1, y2, hordeRadius) end
 end
 
-function RHR_MOD.StormPhaseStart(targetSquare)
+function RHR_MOD.StormPhaseStart()
     RHR_MOD.Log("Storm Phase Started!")
 
-    local hordeDistance = RHR_MOD.ClientSandboxVars.HordeDistance
-    local stormAlertMessage = RHR_MOD.ClientSandboxVars.StormAlertMessage
+    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
+    local stormAlertMessage = RHR_MOD.CSandboxVars.StormAlertMessage
 
-    local targetX = targetSquare:getX()
-    local targetY = targetSquare:getY()
+    local targetX = RHR_MOD.CModData.PlayerX
+    local targetY = RHR_MOD.CModData.PlayerY
 
     local player = getPlayer()
-    if not isPlayerInHordeArea(player, targetX, targetY, hordeDistance) then
+    if not isPlayerInHordeArea(player, targetX, targetY, hordeDistance*2) then
         return
     end
     if player:isAsleep() then
         player:forceAwake()
     end
 
-    player:Say(StormAlertMessage)
+    player:Say(stormAlertMessage)
     playStormSounds(targetX, targetY, hordeDistance)
 end
 
-function RHR_MOD.StormPhaseUpdate(targetSquare)
-    local offset = RHR_MOD.SandboxVars.PlayerPositionOffset
-    local targetX = targetSquare:getX() + ZombRand(-offset, offset)
-    local targetY = targetSquare:getY() + ZombRand(-offset, offset)
+function RHR_MOD.StormPhaseUpdate()
+    local offset = RHR_MOD.CSandboxVars.PlayerPositionOffset
+    local targetX = RHR_MOD.CModData.PlayerX + ZombRand(-offset, offset)
+    local targetY = RHR_MOD.CModData.PlayerY + ZombRand(-offset, offset)
 
-    local hordeDistance = RHR_MOD.SandboxVars.HordeDistance
+    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
     makeNoise(targetX, targetY, hordeDistance * 1.5)
 end

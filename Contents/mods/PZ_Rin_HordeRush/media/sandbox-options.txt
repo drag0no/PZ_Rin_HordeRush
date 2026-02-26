@@ -4,15 +4,15 @@ option HordeRush.StormAlertSound {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_StormAlertSound,
+    translation = StormAlertSound,
 }
 
 option HordeRush.StormAlertMessage
 {
     type = string,
-    default = "A low, deafening rumble shakes the ground... the dead are marching.",
+    default = "A low deafening rumble shakes the ground... the dead are marching.",
     page = HordeRush,
-    translation = Sandbox_StormAlertMessage,
+    translation = StormAlertMessage,
 }
 
 option HordeRush.HordeRadius
@@ -22,7 +22,7 @@ option HordeRush.HordeRadius
     max = 10000,
     default = 200,
     page = HordeRush,
-    translation = Sandbox_HordeRadius,
+    translation = HordeRadius,
 }
 
 option HordeRush.HordeDistance
@@ -32,7 +32,7 @@ option HordeRush.HordeDistance
     max = 10000,
     default = 200,
     page = HordeRush,
-    translation = Sandbox_HordeDistance,
+    translation = HordeDistance,
 }
 
 option HordeRush.MinCooldownPhaseDuration
@@ -42,7 +42,7 @@ option HordeRush.MinCooldownPhaseDuration
     max = 87600.0,
     default = 168.0,
     page = HordeRush,
-    translation = Sandbox_MinCooldownPhaseDuration,
+    translation = MinCooldownPhaseDuration,
 }
 
 option HordeRush.MaxCooldownPhaseDuration
@@ -52,7 +52,7 @@ option HordeRush.MaxCooldownPhaseDuration
     max = 87600.0,
     default = 336.0,
     page = HordeRush,
-    translation = Sandbox_MaxCooldownPhaseDuration,
+    translation = MaxCooldownPhaseDuration,
 }
 
 option HordeRush.MinCalmPhaseDuration
@@ -62,7 +62,7 @@ option HordeRush.MinCalmPhaseDuration
     max = 87600.0,
     default = 24.0,
     page = HordeRush,
-    translation = Sandbox_MinCalmPhaseDuration,
+    translation = MinCalmPhaseDuration,
 }
 
 option HordeRush.MaxCalmPhaseDuration
@@ -72,7 +72,7 @@ option HordeRush.MaxCalmPhaseDuration
     max = 87600.0,
     default = 48.0,
     page = HordeRush,
-    translation = Sandbox_MaxCalmPhaseDuration,
+    translation = MaxCalmPhaseDuration,
 }
 
 option HordeRush.MinStormPhaseDuration
@@ -82,7 +82,7 @@ option HordeRush.MinStormPhaseDuration
     max = 87600.0,
     default = 6.0,
     page = HordeRush,
-    translation = Sandbox_MinStormPhaseDuration,
+    translation = MinStormPhaseDuration,
 }
 
 option HordeRush.MaxStormPhaseDuration
@@ -92,7 +92,7 @@ option HordeRush.MaxStormPhaseDuration
     max = 87600.0,
     default = 12.0,
     page = HordeRush,
-    translation = Sandbox_MaxStormPhaseDuration,
+    translation = MaxStormPhaseDuration,
 }
 
 option HordeRush.PlayerPositionOffset {
@@ -101,63 +101,63 @@ option HordeRush.PlayerPositionOffset {
     max = 10000,
     default = 0,
     page = HordeRush,
-    translation = Sandbox_PlayerPositionOffset,
+    translation = PlayerPositionOffset,
 }
 
 option HordeRush.MigrateToNorth {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToNorth
+    translation = MigrateToNorth
 }
 
 option HordeRush.MigrateToNorthEast {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToNorthEast
+    translation = MigrateToNorthEast
 }
 
 option HordeRush.MigrateToEast {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToEast
+    translation = MigrateToEast
 }
 
 option HordeRush.MigrateToSouthEast {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToSouthEast
+    translation = MigrateToSouthEast
 }
 
 option HordeRush.MigrateToSouth {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToSouth
+    translation = MigrateToSouth
 }
 
 option HordeRush.MigrateToSouthWest {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToSouthWest
+    translation = MigrateToSouthWest
 }
 
 option HordeRush.MigrateToWest {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToWest
+    translation = MigrateToWest
 }
 
 option HordeRush.MigrateToNorthWest {
     type = boolean,
     default = true,
     page = HordeRush,
-    translation = Sandbox_MigrateToNorthWest
+    translation = MigrateToNorthWest
 }
 
 option HordeRush.PhaseUpdateFrequency {
@@ -166,7 +166,7 @@ option HordeRush.PhaseUpdateFrequency {
     max = 525600,
     default = 1,
     page = HordeRush,
-    translation = Sandbox_PhaseUpdateFrequency,
+    translation = PhaseUpdateFrequency,
 }
 
 option HordeRush.LoggingFrequency {
@@ -175,5 +175,5 @@ option HordeRush.LoggingFrequency {
     max = 525600,
     default = 60,
     page = HordeRush,
-    translation = Sandbox_LoggingFrequency,
+    translation = LoggingFrequency,
 }

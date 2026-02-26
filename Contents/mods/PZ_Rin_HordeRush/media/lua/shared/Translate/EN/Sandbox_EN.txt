@@ -60,7 +60,7 @@ Sandbox_EN = {
     Sandbox_PhaseUpdateFrequency_tooltip = "Interval between zombie attraction updates for specified phase (in-game minutes).",
 
     Sandbox_LoggingFrequency = "Logging Frequency",
-    Sandbox_LoggingFrequency_tooltip = "Interval between phase data entries in the debug log (in-game minutes).",
+    Sandbox_LoggingFrequency_tooltip = "Interval between printing debug information into the logs (in-game minutes).",
 }
 
 
