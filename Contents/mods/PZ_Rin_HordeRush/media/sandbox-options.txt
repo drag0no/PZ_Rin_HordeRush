@@ -113,7 +113,7 @@ option HordeRush.PlayerPositionOffset {
     type = integer,
     min = 0,
     max = 10000,
-    default = 10,
+    default = 25,
     page = HordeRush,
     translation = PlayerPositionOffset,
 }
