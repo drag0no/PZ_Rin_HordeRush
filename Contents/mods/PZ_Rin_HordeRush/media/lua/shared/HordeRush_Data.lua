@@ -31,7 +31,7 @@ end
 
 function RHR_MOD.LoadSandboxVars()
     RHR_MOD.SSandboxVars = {
-        StormAlertSound = SandboxVars.HordeRush.SoundType,
+        StormAlertSound = SandboxVars.HordeRush.StormAlertSound,
         StormAlertMessage = SandboxVars.HordeRush.StormAlertMessage,
         HordeRadius = SandboxVars.HordeRush.HordeRadius,
         HordeDistance = SandboxVars.HordeRush.HordeDistance,
@@ -60,18 +60,29 @@ function RHR_MOD.CycleDataToStr(dataObj)
     return "Counter=" .. tostring(dataObj.Counter) .. " / Phases=[".. tostring(dataObj.CooldownDuration) .. "|" .. tostring(dataObj.CooldownDuration + dataObj.CalmDuration) .."|" .. tostring(dataObj.CooldownDuration + dataObj.CalmDuration + dataObj.StormDuration) .. "] / PlayerName=" .. tostring(dataObj.PlayerName) .. " / PlayerCoords=[" .. tostring(dataObj.PlayerX) .. "," .. tostring(dataObj.PlayerY) .. "]"
 end
 
-function RHR_MOD.ResetCycleData()
-    RHR_MOD.SModData.Counter = 0
+local function resetPhaseDurations()
     RHR_MOD.SModData.CooldownDuration = ZombRand(RHR_MOD.SSandboxVars.MinCooldownPhaseDuration, RHR_MOD.SSandboxVars.MaxCooldownPhaseDuration)
     RHR_MOD.SModData.CalmDuration = ZombRand(RHR_MOD.SSandboxVars.MinCalmPhaseDuration, RHR_MOD.SSandboxVars.MaxCalmPhaseDuration)
     RHR_MOD.SModData.StormDuration = ZombRand(RHR_MOD.SSandboxVars.MinStormPhaseDuration, RHR_MOD.SSandboxVars.MaxStormPhaseDuration)
+end
+
+function RHR_MOD.ResetModData()
+    resetPhaseDurations()
+    RHR_MOD.SModData.Counter = 0
+    RHR_MOD.SModData.LogCounter = 0
     RHR_MOD.SModData.PlayerName = nil
     RHR_MOD.SModData.PlayerX = nil
     RHR_MOD.SModData.PlayerY = nil
-    RHR_MOD.SModData.LogCounter = 0
-    RHR_MOD.Log("ResetCycleData - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
+    RHR_MOD.Log("ResetModData - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
 end
 
+local function validateModData()
+    if not RHR_MOD.SModData.CooldownDuration or not RHR_MOD.SModData.CalmDuration or not RHR_MOD.SModData.StormDuration then
+        resetPhaseDurations()
+    end
+    if not RHR_MOD.SModData.Counter then RHR_MOD.SModData.Counter = 0 end
+    if not RHR_MOD.SModData.LogCounter then RHR_MOD.SModData.LogCounter = 0 end
+end
 
 function RHR_MOD.LoadModData()
     RHR_MOD.LoadSandboxVars()
@@ -79,8 +90,9 @@ function RHR_MOD.LoadModData()
     RHR_MOD.SModData = ModData.getOrCreate(RHR_DATAKEY)
     if not RHR_MOD.SModData.Counter then
         RHR_MOD.Log("No ModData Loaded")
-        RHR_MOD.ResetCycleData()
+        RHR_MOD.ResetModData()
     else
         RHR_MOD.Log("ModData Loaded - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
+        validateModData()
     end
 end

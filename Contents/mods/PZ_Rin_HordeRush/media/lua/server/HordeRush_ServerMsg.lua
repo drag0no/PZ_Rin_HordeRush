@@ -60,7 +60,7 @@ function RHR_MOD.CheckPhase()
         serverLog("CheckPhase - The cooldown phase begins in " .. tostring(RHR_MOD.MinutesToHours(stormPhase - counter)) .. " in-game hours")
     -- Reset Cycle
     else
-        RHR_MOD.ResetCycleData()
+        RHR_MOD.ResetModData()
     end
 
     serverLog("CheckPhase - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))

@@ -31,12 +31,11 @@ local function isPlayerInHordeArea(player, targetX, targetY, hordeDistance)
     return  x >= xMin and x <= xMax and y >= yMin and y <= yMax
 end
 
-local function playStormSounds(targetX, targetY, hordeDistance)
+local function playStormSounds(targetX, targetY)
     if not RHR_MOD.CSandboxVars.StormAlertSound then
         return
     end
 
-    local x1, x2, y1, y2 = getHordeSquare(targetX, targetY, hordeDistance)
     local WindIntensity = RHR_MOD.RoundFloat(getClimateManager():getWindIntensity(), 2)
 
     BaseSoundManager:PlaySound("Rumble", false, 0.01)
@@ -44,31 +43,20 @@ local function playStormSounds(targetX, targetY, hordeDistance)
     local sound = getWorld():getFreeEmitter()
     sound:setVolume(WindIntensity, 1.0)
 
-    sound:setPos(x1, y1, 0)
+    sound:setPos(targetX, targetY, 0)
     sound:playSoundImpl("Wind" .. ZombRand(1, 4), false, nil)
-    sound:setPos(x1, y2, 0)
-    sound:playSoundImpl("Wind" .. ZombRand(1, 4), false, nil)
-    sound:setPos(x2, y1, 0)
-    sound:playSoundImpl("Wind" .. ZombRand(1, 4), false, nil)
-    sound:setPos(x2, y2, 0)
-    sound:playSoundImpl("Wind" .. ZombRand(1, 4), false, nil)
+    sound:setPos(targetX + ZombRand(-20, 20), targetY + ZombRand(-20, 20), 0)
+    sound:playSoundImpl("Zombies" .. ZombRand(1, 4), false, nil)
 
-    sound:setPos(x1 + ZombRand(-5, 1), y1 + ZombRand(-5, 1), 0)
-    sound:playSoundImpl("Zombies" .. ZombRand(1, 4), false, nil)
-    sound:setPos(x1 + ZombRand(-5, 1), y2 + ZombRand(-5, 1), 0)
-    sound:playSoundImpl("Zombies" .. ZombRand(1, 4), false, nil)
-    sound:setPos(x2 + ZombRand(-5, 1), y1 + ZombRand(-5, 1), 0)
-    sound:playSoundImpl("Zombies" .. ZombRand(1, 4), false, nil)
-    sound:setPos(x2 + ZombRand(-5, 1), y2 + ZombRand(-5, 1), 0)
-    sound:playSoundImpl("Zombies" .. ZombRand(1, 4), false, nil)
+    RHR_MOD.Log("Storm Phase - Sounds played")
 end
 
 function RHR_MOD.CooldownPhaseStart()
-    RHR_MOD.Log("Cooldown Phase Started!")
+    RHR_MOD.Log("Cooldown Phase - Started")
 end
 
 function RHR_MOD.CalmPhaseStart()
-    RHR_MOD.Log("Calm Phase Started!")
+    RHR_MOD.Log("Calm Phase - Started")
 end
 
 function RHR_MOD.CalmPhaseUpdate()
@@ -90,7 +78,7 @@ function RHR_MOD.CalmPhaseUpdate()
 end
 
 function RHR_MOD.StormPhaseStart()
-    RHR_MOD.Log("Storm Phase Started!")
+    RHR_MOD.Log("Storm Phase - Started")
 
     local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
     local stormAlertMessage = RHR_MOD.CSandboxVars.StormAlertMessage
@@ -107,7 +95,7 @@ function RHR_MOD.StormPhaseStart()
     end
 
     player:Say(stormAlertMessage)
-    playStormSounds(targetX, targetY, hordeDistance)
+    playStormSounds(targetX, targetY)
 end
 
 function RHR_MOD.StormPhaseUpdate()
