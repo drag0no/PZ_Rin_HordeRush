@@ -31,6 +31,8 @@ end
 
 function RHR_MOD.LoadSandboxVars()
     RHR_MOD.SSandboxVars = {
+        CalmPhaseIcon = SandboxVars.HordeRush.CalmPhaseIcon,
+        StormPhaseIcon = SandboxVars.HordeRush.StormPhaseIcon,
         StormAlertSound = SandboxVars.HordeRush.StormAlertSound,
         StormAlertMessage = SandboxVars.HordeRush.StormAlertMessage,
         HordeRadius = SandboxVars.HordeRush.HordeRadius,

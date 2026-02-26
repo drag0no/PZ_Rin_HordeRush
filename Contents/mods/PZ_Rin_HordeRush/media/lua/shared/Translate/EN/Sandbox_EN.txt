@@ -1,9 +1,15 @@
 Sandbox_EN = {
+	Sandbox_CalmPhaseIcon = "Enable Calm Phase Icon",
+	Sandbox_CalmPhaseIcon_tooltip = "Shows the icon for the calm phase when this phase is in place.",
+
+	Sandbox_StormPhaseIcon = "Enable Storm Phase Icon",
+	Sandbox_StormPhaseIcon_tooltip = "Shows the icon for the storm phase when this phase is in place.",
+
 	Sandbox_StormAlertSound = "Enable Sound Effects",
 	Sandbox_StormAlertSound_tooltip = "Allows the sound effects to played at the start of the storm phase.",
 
 	Sandbox_StormAlertMessage = "Horde Alert Message",
-	Sandbox_StormAlertMessage_tooltip = "The message that will appear above the player's head when the storm phase begins. (Optional)",
+	Sandbox_StormAlertMessage_tooltip = "The message that will appear above the player's head when the storm phase begins (leave empty to disable).",
 
 	Sandbox_HordeRadius = "Horde Radius",
 	Sandbox_HordeRadius_tooltip = "Number of tiles from the horde positions zombies will be called to.",

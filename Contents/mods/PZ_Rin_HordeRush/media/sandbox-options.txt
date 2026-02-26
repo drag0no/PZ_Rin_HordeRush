@@ -1,5 +1,19 @@
 VERSION = 1,
 
+option HordeRush.CalmPhaseIcon {
+    type = boolean,
+    default = true,
+    page = HordeRush,
+    translation = CalmPhaseIcon,
+}
+
+option HordeRush.StormPhaseIcon {
+    type = boolean,
+    default = true,
+    page = HordeRush,
+    translation = StormPhaseIcon,
+}
+
 option HordeRush.StormAlertSound {
     type = boolean,
     default = true,
