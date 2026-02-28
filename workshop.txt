@@ -1,5 +1,5 @@
 version=1
-id=
+id=3673979790
 title=Rin Horde Rush
 description=[u] Revamped and updated version of the mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2953621037]The Calm Before The Storm[/url] [/u]
 description=
