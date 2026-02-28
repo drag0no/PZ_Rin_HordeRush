@@ -66,6 +66,7 @@ local function resetPhaseDurations()
     RHR_MOD.SModData.CooldownDuration = ZombRand(RHR_MOD.SSandboxVars.MinCooldownPhaseDuration, RHR_MOD.SSandboxVars.MaxCooldownPhaseDuration)
     RHR_MOD.SModData.CalmDuration = ZombRand(RHR_MOD.SSandboxVars.MinCalmPhaseDuration, RHR_MOD.SSandboxVars.MaxCalmPhaseDuration)
     RHR_MOD.SModData.StormDuration = ZombRand(RHR_MOD.SSandboxVars.MinStormPhaseDuration, RHR_MOD.SSandboxVars.MaxStormPhaseDuration)
+    RHR_MOD.Log("ResetPhaseDuration - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
 end
 
 function RHR_MOD.ResetModData()
@@ -80,6 +81,14 @@ end
 
 local function validateModData()
     if not RHR_MOD.SModData.CooldownDuration or not RHR_MOD.SModData.CalmDuration or not RHR_MOD.SModData.StormDuration then
+        resetPhaseDurations()
+    end
+    if RHR_MOD.SModData.CooldownDuration < RHR_MOD.SSandboxVars.MinCooldownPhaseDuration
+        or RHR_MOD.SModData.CooldownDuration > RHR_MOD.SSandboxVars.MaxCooldownPhaseDuration
+        or RHR_MOD.SModData.CalmDuration < RHR_MOD.SSandboxVars.MinCalmPhaseDuration
+        or RHR_MOD.SModData.CalmDuration > RHR_MOD.SSandboxVars.MaxCalmPhaseDuration
+        or RHR_MOD.SModData.StormDuration < RHR_MOD.SSandboxVars.MinStormPhaseDuration
+        or RHR_MOD.SModData.StormDuration > RHR_MOD.SSandboxVars.MaxStormPhaseDuration then
         resetPhaseDurations()
     end
     if not RHR_MOD.SModData.Counter then RHR_MOD.SModData.Counter = 0 end
