@@ -1,0 +1,96 @@
+module HordeRush {
+
+    imports {
+        base
+    }
+
+    sound Rumble {
+    	category = HordeRush,
+    	is3D = false,
+        clip {
+          file = media/sound/Rumble.ogg,
+          volume = 0.1,
+        }
+    }
+
+    sound Wind1 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Wind1.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+    sound Wind2 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Wind2.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+    sound Wind3 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Wind3.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+    sound Wind4 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Wind4.ogg,
+            --volume = 0.1,
+           distanceMax = 10000,
+        }
+    }
+
+    sound Zombies1 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Zombies1.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+    sound Zombies2 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Zombies2.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+    sound Zombies3 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Zombies3.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+    sound Zombies4 {
+        category = HordeRush,
+        is3D = true,
+        clip {
+            file = media/sound/Zombies4.ogg,
+            --volume = 0.1,
+            distanceMax = 10000,
+        }
+    }
+
+}
