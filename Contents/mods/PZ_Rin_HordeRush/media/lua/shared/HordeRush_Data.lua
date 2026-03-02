@@ -3,7 +3,7 @@ RHR_MOD = RHR_MOD or {}
 RHR_DATAKEY = "RHR_MOD"
 
 function RHR_MOD.Log(msg)
-    print("Rin_HordeRush: " .. tostring(msg))
+    print("[RHR] " .. tostring(msg))
 end
 
 function RHR_MOD.RoundFloat(number, decimalPlace)
@@ -66,7 +66,7 @@ local function resetPhaseDurations()
     RHR_MOD.SModData.CooldownDuration = ZombRand(RHR_MOD.SSandboxVars.MinCooldownPhaseDuration, RHR_MOD.SSandboxVars.MaxCooldownPhaseDuration)
     RHR_MOD.SModData.CalmDuration = ZombRand(RHR_MOD.SSandboxVars.MinCalmPhaseDuration, RHR_MOD.SSandboxVars.MaxCalmPhaseDuration)
     RHR_MOD.SModData.StormDuration = ZombRand(RHR_MOD.SSandboxVars.MinStormPhaseDuration, RHR_MOD.SSandboxVars.MaxStormPhaseDuration)
-    RHR_MOD.Log("ResetPhaseDuration - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
+    RHR_MOD.Log("ResetPhaseDuration: " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
 end
 
 function RHR_MOD.ResetModData()
@@ -76,7 +76,7 @@ function RHR_MOD.ResetModData()
     RHR_MOD.SModData.PlayerName = nil
     RHR_MOD.SModData.PlayerX = nil
     RHR_MOD.SModData.PlayerY = nil
-    RHR_MOD.Log("ResetModData - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
+    RHR_MOD.Log("ResetModData: " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
 end
 
 local function validateModData()
@@ -103,7 +103,7 @@ function RHR_MOD.LoadModData()
         RHR_MOD.Log("No ModData Loaded")
         RHR_MOD.ResetModData()
     else
-        RHR_MOD.Log("ModData Loaded - " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
+        RHR_MOD.Log("ModData Loaded: " .. RHR_MOD.CycleDataToStr(RHR_MOD.SModData))
         validateModData()
     end
 end

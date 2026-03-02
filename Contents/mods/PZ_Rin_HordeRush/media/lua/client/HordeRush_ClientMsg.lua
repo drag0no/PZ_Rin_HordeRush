@@ -35,7 +35,7 @@ function RHR_MOD.OnServerCommand(module, command, args)
         end
         RHR_MOD.StormPhaseUpdate()
     end
-    clientLog("ClientUpdate - Phase=" .. RHR_MOD.CurrentPhase .. " / " .. RHR_MOD.CycleDataToStr(RHR_MOD.CModData))
+    clientLog("ClientUpdate: Phase=" .. RHR_MOD.CurrentPhase .. " / " .. RHR_MOD.CycleDataToStr(RHR_MOD.CModData))
 end
 
 function RHR_MOD.OnGameStart()
