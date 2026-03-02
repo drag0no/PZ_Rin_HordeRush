@@ -20,14 +20,16 @@ for MOD_PATH in "$MODS_DIR"/*/; do
     mkdir -p "$TARGET_DIR/42"
     mkdir -p "$TARGET_DIR/common"
 
-    if [ -d "$TARGET_DIR/media" ]; then
-        cp -r "$TARGET_DIR/media" "$TARGET_DIR/common/"
-    fi
-
+    cp -r "$TARGET_DIR/media" "$TARGET_DIR/common/"
     cp "$TARGET_DIR/mod.info" "$TARGET_DIR/42/"
-    if [ -f "$TARGET_DIR/poster.png" ]; then
-        cp "$TARGET_DIR/poster.png" "$TARGET_DIR/42/"
-    fi
+    cp "$TARGET_DIR/poster.png" "$TARGET_DIR/42/"
+    cp "icon.png" "$TARGET_DIR/42/"
+
+    {
+      echo "author=Rinski"
+      echo "icon=icon.png"
+      echo "versionMin=42.0.0"
+     } >> "$TARGET_DIR/42/mod.info"
 
     echo "  * Successfully restructured '$MOD_NAME'."
 done
