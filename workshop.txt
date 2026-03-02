@@ -39,6 +39,6 @@ description=
 description=
 description=[h2] CREDITS [/h2]
 description=
-description=Massive thanks to [b][url=https://steamcommunity.com/id/socialtroglodyte]socialtroglodyte[/url] for the brilliant core logic of this mod and permission to use his code![/b]
+description=Massive thanks to [b][url=https://steamcommunity.com/id/socialtroglodyte]socialtroglodyte[/url][/b] for the brilliant core logic of this mod and permission to use his code!
 tags=Build 41;Build 42;Hardmode;Realistic;Multiplayer
 visibility=public
