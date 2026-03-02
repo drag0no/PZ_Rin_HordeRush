@@ -2,7 +2,7 @@ VERSION = 1,
 
 option HordeRush.CalmPhaseIcon {
     type = boolean,
-    default = true,
+    default = false,
     page = HordeRush,
     translation = CalmPhaseIcon,
 }
