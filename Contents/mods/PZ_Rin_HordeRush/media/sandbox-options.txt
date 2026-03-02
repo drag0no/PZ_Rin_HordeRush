@@ -24,7 +24,7 @@ option HordeRush.StormAlertSound {
 option HordeRush.StormAlertMessage
 {
     type = string,
-    default = "A low deafening rumble shakes the ground... the dead are marching.",
+    default = A low deafening rumble shakes the ground... the dead are marching.,
     page = HordeRush,
     translation = StormAlertMessage,
 }
@@ -113,7 +113,7 @@ option HordeRush.PlayerPositionOffset {
     type = integer,
     min = 0,
     max = 10000,
-    default = 25,
+    default = 15,
     page = HordeRush,
     translation = PlayerPositionOffset,
 }
