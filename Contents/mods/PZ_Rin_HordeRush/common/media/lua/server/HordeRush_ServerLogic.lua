@@ -11,6 +11,23 @@ local function getRandomPlayer()
     return onlinePlayers:get(randomIndex)
 end
 
+
+local function getOnlinePlayer(username)
+    local onlinePlayers = getOnlinePlayers()
+    if onlinePlayers == nil or onlinePlayers:isEmpty() then
+            return nil
+    end
+
+    for i = 0, onlinePlayers:size() - 1 do
+        local player = onlinePlayers:get(i)
+        if player and player:getUsername() == username then
+            return player
+        end
+    end
+
+    return nil
+end
+
 function RHR_MOD.UpdatePlayerData()
     local player
     if RHR_MOD.IsSinglePlayer() then
@@ -18,7 +35,7 @@ function RHR_MOD.UpdatePlayerData()
     elseif not RHR_MOD.SModData.PlayerName then
         player = getRandomPlayer()
     else
-        player = getPlayerFromUsername(RHR_MOD.SModData.PlayerName)
+        player = getOnlinePlayer(RHR_MOD.SModData.PlayerName)
     end
 
     if not player then
