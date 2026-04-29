@@ -1,4 +1,5 @@
 require "HordeRush_Data"
+require "HordeRush_Utils"
 
 local function getRandomPlayer()
     local onlinePlayers = getOnlinePlayers()
@@ -11,8 +12,7 @@ local function getRandomPlayer()
     return onlinePlayers:get(randomIndex)
 end
 
-
-local function getOnlinePlayer(username)
+local function getOnlinePlayerByUsername(username)
     local onlinePlayers = getOnlinePlayers()
     if onlinePlayers == nil or onlinePlayers:isEmpty() then
             return nil
@@ -28,16 +28,42 @@ local function getOnlinePlayer(username)
     return nil
 end
 
-function RHR_MOD.UpdatePlayerData()
-    local player
-    if RHR_MOD.IsSinglePlayer() then
-        player = getPlayer()
-    elseif not RHR_MOD.SModData.PlayerName then
-        player = getRandomPlayer()
-    else
-        player = getOnlinePlayer(RHR_MOD.SModData.PlayerName)
+local function getOnlinePlayerByDistance(targetX, targetY, hordeDistance)
+    local onlinePlayers = getOnlinePlayers()
+    if onlinePlayers == nil or onlinePlayers:isEmpty() then
+            return nil
     end
 
+    local player, minDistance = nil, math.huge
+    for i = 0, onlinePlayers:size() - 1 do
+        local candidate = onlinePlayers:get(i)
+        if RHR_MOD.IsPlayerInHordeArea(candidate, targetX, targetY, hordeDistance, 1.2) then
+            local distance = RHR_MOD.GetDistance(candidate, targetX, targetY)
+            if distance < minDistance then
+                player, minDistance = candidate, distance
+            end
+        end
+    end
+    return player
+end
+
+local function getPlayer()
+    if RHR_MOD.IsSinglePlayer() then
+        return getPlayer()
+    elseif not RHR_MOD.SModData.PlayerName then
+        return getRandomPlayer()
+    end
+
+    local player = getOnlinePlayerByUsername(RHR_MOD.SModData.PlayerName)
+    if not player and RHR_MOD.SModData.PlayerX and RHR_MOD.SModData.PlayerY then
+        player = getOnlinePlayerByDistance(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
+    end
+
+    return player
+end
+
+function RHR_MOD.UpdatePlayerData()
+    local player = getPlayer()
     if not player then
         if RHR_MOD.SModData.PlayerX and RHR_MOD.SModData.PlayerY then
             return true
