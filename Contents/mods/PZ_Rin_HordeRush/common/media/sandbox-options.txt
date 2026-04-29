@@ -34,7 +34,7 @@ option HordeRush.HordeRadius
     type = integer,
     min = 0,
     max = 10000,
-    default = 200,
+    default = 400,
     page = HordeRush,
     translation = HordeRadius,
 }
@@ -44,7 +44,7 @@ option HordeRush.HordeDistance
     type = integer,
     min = 0,
     max = 10000,
-    default = 200,
+    default = 300,
     page = HordeRush,
     translation = HordeDistance,
 }
@@ -127,7 +127,7 @@ option HordeRush.MigrateToNorth {
 
 option HordeRush.MigrateToNorthEast {
     type = boolean,
-    default = true,
+    default = false,
     page = HordeRush,
     translation = MigrateToNorthEast
 }
@@ -141,7 +141,7 @@ option HordeRush.MigrateToEast {
 
 option HordeRush.MigrateToSouthEast {
     type = boolean,
-    default = true,
+    default = false,
     page = HordeRush,
     translation = MigrateToSouthEast
 }
@@ -155,7 +155,7 @@ option HordeRush.MigrateToSouth {
 
 option HordeRush.MigrateToSouthWest {
     type = boolean,
-    default = true,
+    default = false,
     page = HordeRush,
     translation = MigrateToSouthWest
 }
@@ -169,7 +169,7 @@ option HordeRush.MigrateToWest {
 
 option HordeRush.MigrateToNorthWest {
     type = boolean,
-    default = true,
+    default = false,
     page = HordeRush,
     translation = MigrateToNorthWest
 }
@@ -178,7 +178,7 @@ option HordeRush.PhaseUpdateFrequency {
     type = integer,
     min = 1,
     max = 525600,
-    default = 1,
+    default = 10,
     page = HordeRush,
     translation = PhaseUpdateFrequency,
 }

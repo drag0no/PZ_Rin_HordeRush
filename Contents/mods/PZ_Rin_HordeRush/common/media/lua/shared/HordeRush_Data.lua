@@ -15,20 +15,6 @@ function RHR_MOD.MinutesToHours(minutes)
     return RHR_MOD.RoundFloat(minutes / 60, 1)
 end
 
-function RHR_MOD.IsPlayerAlive(player)
-    return player and player:isAlive()
-end
-
-function RHR_MOD.IsSinglePlayer()
-    return not isClient() and not isServer()
-end
-
-function RHR_MOD.IsServerAdmin(player)
-    if not player then return false end
-    local access = player:getAccessLevel():lower()
-    return access == "admin"
-end
-
 function RHR_MOD.LoadSandboxVars()
     RHR_MOD.SSandboxVars = {
         CalmPhaseIcon = SandboxVars.HordeRush.CalmPhaseIcon,
