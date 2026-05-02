@@ -1,5 +1,6 @@
 require "HordeRush_Data"
 require "HordeRush_ServerLogic"
+require "HordeRush_SoundEvents"
 
 local function serverLog(msg)
     if RHR_MOD.SModData.LogCounter % RHR_MOD.SSandboxVars.LoggingFrequency == 0 then
@@ -39,18 +40,22 @@ function RHR_MOD.CheckPhase()
         sendCommand("CooldownPhaseUpdate", dataSet)
     -- Calm Phase
     elseif counter >= cooldownPhase and counter < calmPhase then
-        if not RHR_MOD.UpdatePlayerData() then
+        local player = RHR_MOD.GetModPlayer()
+        if not RHR_MOD.UpdatePlayerData(player) then
             serverLog("CheckPhase: No Player Data. Skipping Calm Phase Update.")
             return
         end
+        RHR_MOD.MakeCalmPhaseNoise(player, RHR_MOD.SSandboxVars, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY)
         sendCommand("CalmPhaseUpdate", dataSet)
         serverLog("CheckPhase: The storm phase begins in " .. tostring(RHR_MOD.MinutesToHours(calmPhase - counter)) .. " in-game hours")
     -- Storm Phase
     elseif counter >= calmPhase and counter < stormPhase then
-        if not RHR_MOD.UpdatePlayerData() then
+        local player = RHR_MOD.GetModPlayer()
+        if not RHR_MOD.UpdatePlayerData(player) then
             serverLog("CheckPhase: No Player Data. Skipping Storm Phase Update.")
             return
         end
+        RHR_MOD.MakeStormPhaseNoise(player, RHR_MOD.SSandboxVars, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY)
         sendCommand("StormPhaseUpdate", dataSet)
         serverLog("CheckPhase: The cooldown phase begins in " .. tostring(RHR_MOD.MinutesToHours(stormPhase - counter)) .. " in-game hours")
     -- Reset Cycle

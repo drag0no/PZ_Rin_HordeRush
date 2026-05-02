@@ -1,15 +1,8 @@
 require "HordeRush_Data"
 require "HordeRush_Utils"
+require "HordeRush_SoundEvents"
 
-local WorldSoundManager = getWorldSoundManager()
 local BaseSoundManager = getSoundManager()
-
-local function makeNoise(x, y, radius)
-    local player = getPlayer()
-    if player then
-        WorldSoundManager:addSound(player, x, y, 0, radius, radius * 5000)
-    end
-end
 
 local function playStormSounds(targetX, targetY)
     if not RHR_MOD.CSandboxVars.StormAlertSound then
@@ -40,21 +33,10 @@ function RHR_MOD.CalmPhaseStart()
 end
 
 function RHR_MOD.CalmPhaseUpdate()
-    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
-    local hordeRadius = RHR_MOD.CSandboxVars.HordeRadius
-
+    local player = getPlayer()
     local targetX = RHR_MOD.CModData.PlayerX
     local targetY = RHR_MOD.CModData.PlayerY
-    local x1, x2, y1, y2 = RHR_MOD.GetHordeSquare(targetX, targetY, hordeDistance)
-
-    if RHR_MOD.CSandboxVars.MigrationNorth then makeNoise(targetX, y1, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationEast then makeNoise(x2, targetY, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationWest then makeNoise(x1, targetY, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationSouth then makeNoise(targetX, y2, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationNorthEast then makeNoise(x2, y1, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationNorthWest then makeNoise(x1, y1, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationSouthEast then makeNoise(x2, y2, hordeRadius) end
-    if RHR_MOD.CSandboxVars.MigrationSouthWest then makeNoise(x1, y2, hordeRadius) end
+    RHR_MOD.MakeCalmPhaseNoise(player, RHR_MOD.CSandboxVars, targetX, targetY)
 end
 
 function RHR_MOD.StormPhaseStart()
@@ -79,10 +61,8 @@ function RHR_MOD.StormPhaseStart()
 end
 
 function RHR_MOD.StormPhaseUpdate()
-    local offset = RHR_MOD.CSandboxVars.PlayerPositionOffset
-    local targetX = RHR_MOD.CModData.PlayerX + ZombRandBetween(-offset, offset)
-    local targetY = RHR_MOD.CModData.PlayerY + ZombRandBetween(-offset, offset)
-
-    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
-    makeNoise(targetX, targetY, hordeDistance * 1.5)
+    local player = getPlayer()
+    local targetX = RHR_MOD.CModData.PlayerX
+    local targetY = RHR_MOD.CModData.PlayerY
+    RHR_MOD.MakeStormPhaseNoise(player, RHR_MOD.CSandboxVars, targetX, targetY)
 end
