@@ -80,8 +80,8 @@ end
 
 function RHR_MOD.StormPhaseUpdate()
     local offset = RHR_MOD.CSandboxVars.PlayerPositionOffset
-    local targetX = RHR_MOD.CModData.PlayerX + ZombRand(-offset, offset)
-    local targetY = RHR_MOD.CModData.PlayerY + ZombRand(-offset, offset)
+    local targetX = RHR_MOD.CModData.PlayerX + ZombRandBetween(-offset, offset)
+    local targetY = RHR_MOD.CModData.PlayerY + ZombRandBetween(-offset, offset)
 
     local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
     makeNoise(targetX, targetY, hordeDistance * 1.5)

@@ -74,7 +74,7 @@ option HordeRush.MinCalmPhaseDuration
     type = double,
     min = 0.0,
     max = 87600.0,
-    default = 24.0,
+    default = 48.0,
     page = HordeRush,
     translation = MinCalmPhaseDuration,
 }
@@ -84,7 +84,7 @@ option HordeRush.MaxCalmPhaseDuration
     type = double,
     min = 0.0,
     max = 87600.0,
-    default = 48.0,
+    default = 96.0,
     page = HordeRush,
     translation = MaxCalmPhaseDuration,
 }
@@ -94,7 +94,7 @@ option HordeRush.MinStormPhaseDuration
     type = double,
     min = 0.0,
     max = 87600.0,
-    default = 6.0,
+    default = 18.0,
     page = HordeRush,
     translation = MinStormPhaseDuration,
 }
@@ -104,7 +104,7 @@ option HordeRush.MaxStormPhaseDuration
     type = double,
     min = 0.0,
     max = 87600.0,
-    default = 12.0,
+    default = 30.0,
     page = HordeRush,
     translation = MaxStormPhaseDuration,
 }
@@ -113,7 +113,7 @@ option HordeRush.PlayerPositionOffset {
     type = integer,
     min = 0,
     max = 10000,
-    default = 15,
+    default = 10,
     page = HordeRush,
     translation = PlayerPositionOffset,
 }
@@ -178,7 +178,7 @@ option HordeRush.PhaseUpdateFrequency {
     type = integer,
     min = 1,
     max = 525600,
-    default = 10,
+    default = 5,
     page = HordeRush,
     translation = PhaseUpdateFrequency,
 }
