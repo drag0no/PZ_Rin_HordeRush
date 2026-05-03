@@ -47,21 +47,6 @@ local function getOnlinePlayerByDistance(targetX, targetY, hordeDistance)
     return player
 end
 
-local function getPlayer()
-    if RHR_MOD.IsSinglePlayer() then
-        return getPlayer()
-    elseif not RHR_MOD.SModData.PlayerName then
-        return getRandomPlayer()
-    end
-
-    local player = getOnlinePlayerByUsername(RHR_MOD.SModData.PlayerName)
-    if not player and RHR_MOD.SModData.PlayerX and RHR_MOD.SModData.PlayerY then
-        player = getOnlinePlayerByDistance(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
-    end
-
-    return player
-end
-
 function RHR_MOD.GetModPlayer()
     if RHR_MOD.IsSinglePlayer() then
         return getPlayer()

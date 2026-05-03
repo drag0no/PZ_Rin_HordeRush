@@ -45,7 +45,9 @@ function RHR_MOD.CheckPhase()
             serverLog("CheckPhase: No Player Data. Skipping Calm Phase Update.")
             return
         end
-        RHR_MOD.MakeCalmPhaseNoise(player, RHR_MOD.SSandboxVars, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY)
+        if not RHR_MOD.IsSinglePlayer() then
+            RHR_MOD.CalmPhaseEventNoise(player, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
+        end
         sendCommand("CalmPhaseUpdate", dataSet)
         serverLog("CheckPhase: The storm phase begins in " .. tostring(RHR_MOD.MinutesToHours(calmPhase - counter)) .. " in-game hours")
     -- Storm Phase
@@ -55,7 +57,9 @@ function RHR_MOD.CheckPhase()
             serverLog("CheckPhase: No Player Data. Skipping Storm Phase Update.")
             return
         end
-        RHR_MOD.MakeStormPhaseNoise(player, RHR_MOD.SSandboxVars, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY)
+        if not RHR_MOD.IsSinglePlayer() then
+            RHR_MOD.StormPhaseEventNoise(player, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.PlayerPositionOffset, RHR_MOD.SSandboxVars.HordeDistance)
+        end
         sendCommand("StormPhaseUpdate", dataSet)
         serverLog("CheckPhase: The cooldown phase begins in " .. tostring(RHR_MOD.MinutesToHours(stormPhase - counter)) .. " in-game hours")
     -- Reset Cycle

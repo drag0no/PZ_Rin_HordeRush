@@ -16,11 +16,40 @@ description=
 description=[b]"Horde Rush"[/b] is a survival-focused mod designed to keep you on your toes and test your base defenses when you least expect it... Are you prepared to hold the line?
 description=
 description=
+description=[h2]PREREQUISITES[/h2]
+description=
+description=For this mod to function correctly, you must adjust a few specific Sandbox Options.
+description=
+description=You can find these settings under [b]`Advanced Zombie Options`[/b] (if editing in-game) or under the [b]`ZombieConfig`[/b] section (if editing your server's SandboxVars file).
+description=
+description=[b]1. Enable Zombie Respawn[/b]
+description=The mod relies on zombies existing in the world. Make sure respawning is turned on by setting the following values to greater than zero. Default Values are here are pretty good enough.
+description=[code]
+description=Respawn Hours = 72
+description=Respawn Unseen Hours = 16
+description=[/code]
+description=
+description=[b]2. Adjust Population Multipliers[/b]
+description=To ensure the horde events feel appropriately challenging and intense, I highly recommend tweaking your population levels. Default values here are also pretty good:
+description=[code]
+description=Population Multiplier = 2.0
+description=Population Start Multiplier = 1.0
+description=Population Peak Multiplier = 1.5
+description=[/code]
+description=
+description=[b]3. Increase Sound Follow Distance[/b]
+description=Zombies need to be allowed to travel long distances when they hear the any in-game events' sounds.
+description=[code]
+description=Follow Sound Distance = 450
+description=[/code]
+description=[i](Note: If you set the "Horde Radius" in the mod options higher than 450, you must increase this sandbox value to match it!)[/i]
+description=
+description=
 description=[h2] HOW IT WORKS [/h2]
 description=
 description=* [b]No Artificial Spawns:[/b] This mod does not spawn new zombies out of thin air. It only attracts the undead that are already roaming nearby in your world.
 description=
-description=* [b]Sandbox Scaling:[/b] Because it uses the existing local population, the difficulty and size of these waves are directly tied to your game's default ZombieConfig in the Sandbox Variables. Play with high population multipliers, and you'll face massive, overwhelming hordes. Play on lower populations, and the rushes will be more manageable.
+description=* [b]Sandbox Scaling:[/b] Because it uses the existing local population, the difficulty and size of these waves are directly tied to your game's default Zombie Config in the Sandbox options. Play with high population multipliers, and you'll face massive, overwhelming hordes. Play on lower populations, and the rushes will be more manageable.
 description=
 description=
 description=The event cycles through three phases:
