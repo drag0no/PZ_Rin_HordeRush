@@ -4,6 +4,7 @@ require "HordeRush_Utils"
 local WorldSoundManager = getWorldSoundManager()
 
 local lastCalmIdx = 0
+local lastStormIdx = 0
 
 local function makeNoise(player, x, y, radius, volume)
     if player then
@@ -33,10 +34,10 @@ function RHR_MOD.CalmPhaseEventNoise(player, targetX, targetY, hordeDistance)
 end
 
 function RHR_MOD.StormPhaseEventNoise(player, targetX, targetY, offset, hordeDistance)
+    lastStormIdx = makeGatherNoise(player, targetX, targetY, 110, 1000, lastStormIdx)
+
     local offsetX, offsetY = ZombRandBetween(-offset, offset), ZombRandBetween(-offset, offset)
     local x, y = targetX + offsetX, targetY + offsetY
-    makeNoise(player, x, y, hordeDistance * 2, 1000)
-    makeNoise(player, x, y, 100, 2000)
-    makeNoise(player, x, y, 50, 5000)
+    makeNoise(player, x, y, hordeDistance * 2, 5000)
 end
 
