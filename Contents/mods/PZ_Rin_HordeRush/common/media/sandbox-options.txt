@@ -29,16 +29,6 @@ option HordeRush.StormAlertMessage
     translation = StormAlertMessage,
 }
 
-option HordeRush.HordeRadius
-{
-    type = integer,
-    min = 0,
-    max = 10000,
-    default = 400,
-    page = HordeRush,
-    translation = HordeRadius,
-}
-
 option HordeRush.HordeDistance
 {
     type = integer,
@@ -116,62 +106,6 @@ option HordeRush.PlayerPositionOffset {
     default = 10,
     page = HordeRush,
     translation = PlayerPositionOffset,
-}
-
-option HordeRush.MigrateToNorth {
-    type = boolean,
-    default = false,
-    page = HordeRush,
-    translation = MigrateToNorth
-}
-
-option HordeRush.MigrateToNorthEast {
-    type = boolean,
-    default = true,
-    page = HordeRush,
-    translation = MigrateToNorthEast
-}
-
-option HordeRush.MigrateToEast {
-    type = boolean,
-    default = false,
-    page = HordeRush,
-    translation = MigrateToEast
-}
-
-option HordeRush.MigrateToSouthEast {
-    type = boolean,
-    default = true,
-    page = HordeRush,
-    translation = MigrateToSouthEast
-}
-
-option HordeRush.MigrateToSouth {
-    type = boolean,
-    default = false,
-    page = HordeRush,
-    translation = MigrateToSouth
-}
-
-option HordeRush.MigrateToSouthWest {
-    type = boolean,
-    default = true,
-    page = HordeRush,
-    translation = MigrateToSouthWest
-}
-
-option HordeRush.MigrateToWest {
-    type = boolean,
-    default = false,
-    page = HordeRush,
-    translation = MigrateToWest
-}
-
-option HordeRush.MigrateToNorthWest {
-    type = boolean,
-    default = true,
-    page = HordeRush,
-    translation = MigrateToNorthWest
 }
 
 option HordeRush.PhaseUpdateFrequency {

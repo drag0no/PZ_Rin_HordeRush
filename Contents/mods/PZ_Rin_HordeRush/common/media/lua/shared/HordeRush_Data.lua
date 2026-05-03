@@ -21,7 +21,6 @@ function RHR_MOD.LoadSandboxVars()
         StormPhaseIcon = SandboxVars.HordeRush.StormPhaseIcon,
         StormAlertSound = SandboxVars.HordeRush.StormAlertSound,
         StormAlertMessage = SandboxVars.HordeRush.StormAlertMessage,
-        HordeRadius = SandboxVars.HordeRush.HordeRadius,
         HordeDistance = SandboxVars.HordeRush.HordeDistance,
         MinCooldownPhaseDuration = SandboxVars.HordeRush.MinCooldownPhaseDuration * 60 + 0.0,
         MaxCooldownPhaseDuration = SandboxVars.HordeRush.MaxCooldownPhaseDuration * 60 + 0.0,
@@ -30,14 +29,6 @@ function RHR_MOD.LoadSandboxVars()
         MinStormPhaseDuration = SandboxVars.HordeRush.MinStormPhaseDuration * 60 + 0.0,
         MaxStormPhaseDuration = SandboxVars.HordeRush.MaxStormPhaseDuration * 60 + 0.0,
         PlayerPositionOffset = SandboxVars.HordeRush.PlayerPositionOffset,
-        MigrationNorth = SandboxVars.HordeRush.MigrateToNorth,
-        MigrationEast = SandboxVars.HordeRush.MigrateToEast,
-        MigrationSouth = SandboxVars.HordeRush.MigrateToSouth,
-        MigrationWest = SandboxVars.HordeRush.MigrateToWest,
-        MigrationNorthEast = SandboxVars.HordeRush.MigrateToNorthEast,
-        MigrationNorthWest = SandboxVars.HordeRush.MigrateToNorthWest,
-        MigrationSouthEast = SandboxVars.HordeRush.MigrateToSouthEast,
-        MigrationSouthWest = SandboxVars.HordeRush.MigrateToSouthWest,
         PhaseUpdateFrequency = SandboxVars.HordeRush.PhaseUpdateFrequency,
         LoggingFrequency = SandboxVars.HordeRush.LoggingFrequency
     }

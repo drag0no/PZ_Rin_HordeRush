@@ -36,7 +36,8 @@ function RHR_MOD.CalmPhaseUpdate()
     local player = getPlayer()
     local targetX = RHR_MOD.CModData.PlayerX
     local targetY = RHR_MOD.CModData.PlayerY
-    RHR_MOD.MakeCalmPhaseNoise(player, RHR_MOD.CSandboxVars, targetX, targetY)
+    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
+    RHR_MOD.CalmPhaseEventNoise(player, targetX, targetY, hordeDistance)
 end
 
 function RHR_MOD.StormPhaseStart()
@@ -64,5 +65,7 @@ function RHR_MOD.StormPhaseUpdate()
     local player = getPlayer()
     local targetX = RHR_MOD.CModData.PlayerX
     local targetY = RHR_MOD.CModData.PlayerY
-    RHR_MOD.MakeStormPhaseNoise(player, RHR_MOD.CSandboxVars, targetX, targetY)
+    local offset = RHR_MOD.CSandboxVars.PlayerPositionOffset
+    local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
+    RHR_MOD.StormPhaseEventNoise(player, targetX, targetY, offset, hordeDistance)
 end
