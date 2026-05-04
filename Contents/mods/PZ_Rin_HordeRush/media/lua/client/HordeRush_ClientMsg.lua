@@ -19,21 +19,22 @@ function RHR_MOD.OnServerCommand(module, command, args)
     unpackUpdate(args)
     if command == "CooldownPhaseUpdate" then
         if RHR_MOD.CurrentPhase ~= 0 then
-            RHR_MOD.CooldownPhaseStart()
+            RHR_MOD.ClientCooldownPhaseStart()
             RHR_MOD.CurrentPhase = 0
         end
+        RHR_MOD.ClientCooldownPhaseUpdate()
     elseif command == "CalmPhaseUpdate" then
         if RHR_MOD.CurrentPhase ~= 1 then
-            RHR_MOD.CalmPhaseStart()
+            RHR_MOD.ClientCalmPhaseStart()
             RHR_MOD.CurrentPhase = 1
         end
-        RHR_MOD.CalmPhaseUpdate()
+        RHR_MOD.ClientCalmPhaseUpdate()
     elseif command == "StormPhaseUpdate" then
         if RHR_MOD.CurrentPhase ~= 2 then
-            RHR_MOD.StormPhaseStart()
+            RHR_MOD.ClientStormPhaseStart()
             RHR_MOD.CurrentPhase = 2
         end
-        RHR_MOD.StormPhaseUpdate()
+        RHR_MOD.ClientStormPhaseUpdate()
     end
     clientLog("ClientUpdate: Phase=" .. RHR_MOD.CurrentPhase .. " / " .. RHR_MOD.CycleDataToStr(RHR_MOD.CModData))
 end

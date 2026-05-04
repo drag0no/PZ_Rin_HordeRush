@@ -5,6 +5,13 @@ local WorldSoundManager = getWorldSoundManager()
 
 local calmSoundIdx = 0
 local stormSoundIdx = 0
+local tracking = {
+    active = false,
+    targetX = 0,
+    targetY = 0,
+    offsetX = 0,
+    offsetY = 0
+}
 
 local function makeWorldNoise(x, y, radius, volume)
     WorldSoundManager:addSound(nil, x, y, 0, radius, volume)
@@ -63,9 +70,25 @@ function RHR_MOD.CalmPhaseEventNoise(targetX, targetY, hordeDistance)
     calmSoundIdx = makeCalmGatherNoise(calmSoundIdx, targetX, targetY, hordeDistance, 10000)
 end
 
-function RHR_MOD.StormPhaseEventNoise(targetX, targetY, offset, hordeDistance, phaseUpdateFreq)
+function RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq)
     stormSoundIdx = makeStormGatherNoise(stormSoundIdx, phaseUpdateFreq, targetX, targetY, 110, hordeDistance*2, 10000)
-
-    local offsetX, offsetY = ZombRandBetween(-offset, offset), ZombRandBetween(-offset, offset)
-    redirectLoadedZombie(targetX, targetY, offsetX, offsetY, 120)
 end
+
+function RHR_MOD.SetTracking(targetX, targetY, offset)
+    tracking.targetX = targetX
+    tracking.targetY = targetY
+    tracking.offsetX = ZombRandBetween(-offset, offset)
+    tracking.offsetY = ZombRandBetween(-offset, offset)
+    tracking.active = true
+end
+
+function RHR_MOD.ClearTracking()
+    tracking.active = false
+end
+
+function RHR_MOD.TrackOnTick()
+    if not tracking.active then return end
+    redirectLoadedZombie(tracking.targetX, tracking.targetY, tracking.offsetX, tracking.offsetY, 120)
+end
+
+Events.OnTick.Add(RHR_MOD.TrackOnTick)

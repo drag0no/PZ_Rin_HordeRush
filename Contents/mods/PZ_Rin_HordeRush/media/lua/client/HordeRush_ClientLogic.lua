@@ -24,22 +24,27 @@ local function playStormSounds(targetX, targetY)
     RHR_MOD.Log("Storm Phase: Sounds played")
 end
 
-function RHR_MOD.CooldownPhaseStart()
+function RHR_MOD.ClientCooldownPhaseStart()
     RHR_MOD.Log("Cooldown Phase: Started")
 end
 
-function RHR_MOD.CalmPhaseStart()
+function RHR_MOD.ClientCooldownPhaseUpdate()
+    RHR_MOD.ClearTracking()
+end
+
+function RHR_MOD.ClientCalmPhaseStart()
     RHR_MOD.Log("Calm Phase: Started")
 end
 
-function RHR_MOD.CalmPhaseUpdate()
+function RHR_MOD.ClientCalmPhaseUpdate()
     local targetX = RHR_MOD.CModData.PlayerX
     local targetY = RHR_MOD.CModData.PlayerY
     local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
+    RHR_MOD.ClearTracking()
     RHR_MOD.CalmPhaseEventNoise(targetX, targetY, hordeDistance)
 end
 
-function RHR_MOD.StormPhaseStart()
+function RHR_MOD.ClientStormPhaseStart()
     RHR_MOD.Log("Storm Phase: Started")
 
     local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
@@ -60,11 +65,12 @@ function RHR_MOD.StormPhaseStart()
     playStormSounds(targetX, targetY)
 end
 
-function RHR_MOD.StormPhaseUpdate()
+function RHR_MOD.ClientStormPhaseUpdate()
     local targetX = RHR_MOD.CModData.PlayerX
     local targetY = RHR_MOD.CModData.PlayerY
     local offset = RHR_MOD.CSandboxVars.PlayerPositionOffset
     local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
     local phaseUpdateFreq =  RHR_MOD.CSandboxVars.PhaseUpdateFrequency
-    RHR_MOD.StormPhaseEventNoise(targetX, targetY, offset, hordeDistance, phaseUpdateFreq)
+    RHR_MOD.SetTracking(targetX, targetY, offset)
+    RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq)
 end
