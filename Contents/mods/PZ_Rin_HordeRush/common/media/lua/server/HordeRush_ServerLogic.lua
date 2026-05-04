@@ -1,6 +1,12 @@
 require "HordeRush_Data"
 require "HordeRush_Utils"
 
+local function serverLog(msg)
+    if RHR_MOD.SModData.LogCounter % RHR_MOD.SSandboxVars.LoggingFrequency == 0 then
+        RHR_MOD.Log(msg)
+    end
+end
+
 local function getRandomPlayer()
     local onlinePlayers = getOnlinePlayers()
     if onlinePlayers == nil or onlinePlayers:isEmpty() then
@@ -47,7 +53,7 @@ local function getOnlinePlayerByDistance(targetX, targetY, hordeDistance)
     return player
 end
 
-function RHR_MOD.GetModPlayer()
+local function getModPlayer()
     if RHR_MOD.IsSinglePlayer() then
         return getPlayer()
     elseif not RHR_MOD.SModData.PlayerName then
@@ -62,7 +68,7 @@ function RHR_MOD.GetModPlayer()
     return player
 end
 
-function RHR_MOD.UpdatePlayerData(player)
+local function updatePlayerData(player)
     if not player then
         if RHR_MOD.SModData.PlayerX and RHR_MOD.SModData.PlayerY then
             return true
@@ -84,4 +90,37 @@ function RHR_MOD.UpdatePlayerData(player)
     RHR_MOD.SModData.PlayerX = playerSquare:getX()
     RHR_MOD.SModData.PlayerY = playerSquare:getY()
     return true
+end
+
+
+local function tryUpdateSData(phaseName)
+    local player = getModPlayer()
+    if not updatePlayerData(player) then
+        serverLog("UpdatePhase: No Player Data. Skipping " .. phaseName .. " Phase Update.")
+        return false
+    end
+    return true
+end
+
+
+function RHR_MOD.ServerCooldownPhaseUpdate()
+    if RHR_MOD.IsSinglePlayer() then return end
+
+    RHR_MOD.ClearTracking()
+end
+
+function RHR_MOD.ServerCalmPhaseUpdate()
+    if not tryUpdateSData("Calm") then return end
+    if RHR_MOD.IsSinglePlayer() then return end
+
+    RHR_MOD.ClearTracking()
+    RHR_MOD.CalmPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
+end
+
+function RHR_MOD.ServerStormPhaseUpdate()
+    if not tryUpdateSData("Storm") then return end
+    if RHR_MOD.IsSinglePlayer() then return end
+
+    RHR_MOD.SetTracking(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.PlayerPositionOffset)
+    RHR_MOD.StormPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance, RHR_MOD.SSandboxVars.PhaseUpdateFrequency)
 end

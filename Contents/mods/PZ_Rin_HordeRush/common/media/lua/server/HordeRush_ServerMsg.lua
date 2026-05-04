@@ -54,30 +54,17 @@ function RHR_MOD.CheckPhase()
 
     -- Cooldown Phase
     if counter < cooldownPhase then
+        RHR_MOD.ServerCooldownPhaseUpdate()
         serverLog("CheckPhase: The calm phase begins in " .. tostring(RHR_MOD.MinutesToHours(cooldownPhase - counter)) .. " in-game hours")
         sendCommand("CooldownPhaseUpdate", dataSet)
     -- Calm Phase
     elseif counter >= cooldownPhase and counter < calmPhase then
-        local player = RHR_MOD.GetModPlayer()
-        if not RHR_MOD.UpdatePlayerData(player) then
-            serverLog("CheckPhase: No Player Data. Skipping Calm Phase Update.")
-            return
-        end
-        if not RHR_MOD.IsSinglePlayer() then
-            RHR_MOD.CalmPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
-        end
+        RHR_MOD.ServerCalmPhaseUpdate()
         sendCommand("CalmPhaseUpdate", dataSet)
         serverLog("CheckPhase: The storm phase begins in " .. tostring(RHR_MOD.MinutesToHours(calmPhase - counter)) .. " in-game hours")
     -- Storm Phase
     elseif counter >= calmPhase and counter < stormPhase then
-        local player = RHR_MOD.GetModPlayer()
-        if not RHR_MOD.UpdatePlayerData(player) then
-            serverLog("CheckPhase: No Player Data. Skipping Storm Phase Update.")
-            return
-        end
-        if not RHR_MOD.IsSinglePlayer() then
-            RHR_MOD.StormPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.PlayerPositionOffset, RHR_MOD.SSandboxVars.HordeDistance, RHR_MOD.SSandboxVars.PhaseUpdateFrequency)
-        end
+        RHR_MOD.ServerStormPhaseUpdate()
         sendCommand("StormPhaseUpdate", dataSet)
         serverLog("CheckPhase: The cooldown phase begins in " .. tostring(RHR_MOD.MinutesToHours(stormPhase - counter)) .. " in-game hours")
     -- Reset Cycle
