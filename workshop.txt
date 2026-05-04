@@ -23,7 +23,7 @@ description=
 description=You can find these settings under [b]`Advanced Zombie Options`[/b] (if editing in-game) or under the [b]`ZombieConfig`[/b] section (if editing your server's SandboxVars file).
 description=
 description=[b]1. Enable Zombie Respawn[/b]
-description=The mod relies on zombies existing in the world. Make sure respawning is turned on by setting the following values to greater than zero. Default Values are here are pretty good enough.
+description=The mod relies on zombies existing in the world. Make sure respawning is turned on by setting the following values to greater than zero. Default Values here are pretty good enough.
 description=[code]
 description=Respawn Hours = 72
 description=Respawn Unseen Hours = 16
