@@ -3,68 +3,69 @@ require "HordeRush_Utils"
 
 local WorldSoundManager = getWorldSoundManager()
 
-local calmLastIdx = 0
-local calmLastTick = 0
-local stormLastIdx = {}
-local stormLastTick = {}
+local calmSoundIdx = 0
+local stormSoundIdx = 0
 
-local function makeNoise(player, x, y, radius, volume)
-    if player then
-        WorldSoundManager:addSound(player, x, y, 0, radius, volume)
-    end
+local function makeWorldNoise(x, y, radius, volume)
+    WorldSoundManager:addSound(nil, x, y, 0, radius, volume)
 end
 
-local function makeGatherNoise(player, targetX, targetY, hordeDistance, volume, lastIdx, lastTick, waitTicks)
-    lastTick = lastTick + 1
-    if lastTick < waitTicks then return lastIdx, lastTick end
+local function makeCalmGatherNoise(soundIdx, targetX, targetY, hordeDistance, volume)
+    local hordeRadius = hordeDistance * 1.25
+    local x1, x2, y1, y2 = RHR_MOD.GetSquare(targetX, targetY, hordeDistance)
 
-    local hordeRadius = hordeDistance * 1.42
-    local x1, x2, y1, y2 = RHR_MOD.GetHordeSquare(targetX, targetY, hordeDistance)
-
-    local checkIdx = (lastIdx + 1) % 6
+    local checkIdx = (soundIdx + 1) % 4
     if checkIdx == 0 then
-        makeNoise(player,x1, y1, hordeRadius, volume)
+        makeWorldNoise(x1, y1, hordeRadius, volume)
     elseif checkIdx == 1 then
-        makeNoise(player,x2, y2, hordeRadius, volume)
+        makeWorldNoise(x2, y2, hordeRadius, volume)
     elseif checkIdx == 2 then
-        -- do nothing
-    elseif checkIdx == 3 then
-        makeNoise(player,x1, y2, hordeRadius, volume)
-    elseif checkIdx == 4 then
-        makeNoise(player,x2, y1, hordeRadius, volume)
-    elseif checkIdx == 5 then
-        -- do nothing
+        makeWorldNoise(x1, y2, hordeRadius, volume)
+    else
+        makeWorldNoise(x2, y1, hordeRadius, volume)
     end
-
-    lastTick = 0
-    return checkIdx, lastTick
+    return checkIdx
 end
 
-function RHR_MOD.CalmPhaseEventNoise(player, targetX, targetY, hordeDistance)
-    calmLastIdx, calmLastTick = makeGatherNoise(player, targetX, targetY, hordeDistance, 5000, calmLastIdx, calmLastTick, 5)
+local function makeStormGatherNoise(soundIdx, phaseUpdateFreq, targetX, targetY, hordeDistance, pulseRadius, volume)
+    local x1, x2, y1, y2 = RHR_MOD.GetSquare(targetX, targetY, hordeDistance)
+
+    local cycleLength = math.ceil(240 / phaseUpdateFreq)
+    local cycleHalf = math.floor(cycleLength / 4)
+
+    local checkIdx = (soundIdx + 1) % cycleLength
+    if checkIdx < cycleHalf then
+        makeWorldNoise(x1, y1, pulseRadius, volume)
+    elseif checkIdx < cycleHalf * 2 then
+        makeWorldNoise(x2, y2, pulseRadius, volume)
+    elseif checkIdx < cycleHalf * 3 then
+        makeWorldNoise(x1, y2, pulseRadius, volume)
+    else
+        makeWorldNoise(x2, y1, pulseRadius, volume)
+    end
+    return checkIdx
 end
 
-function RHR_MOD.StormPhaseEventNoise(player, targetX, targetY, offset, hordeDistance)
-    local idx = 0
-    local volume = 1000
-    local currDistance = hordeDistance
-    while currDistance > 0 do
-        if not stormLastIdx[idx] then stormLastIdx[idx] = 0 end
-        if not stormLastTick[idx] then stormLastTick[idx] = 0 end
+local function redirectLoadedZombie(targetX, targetY, offsetX, offsetY, distance)
+    local zombieList = getCell():getZombieList()
+    if not zombieList then return end
 
-        if currDistance < 110 then
-            stormLastIdx[idx], stormLastTick[idx] = makeGatherNoise(player, targetX, targetY, 105, volume, stormLastIdx[idx], stormLastTick[idx], 0)
-            break
-        else
-            stormLastIdx[idx], stormLastTick[idx] = makeGatherNoise(player, targetX, targetY, currDistance, volume, stormLastIdx[idx], stormLastTick[idx], 0)
-            currDistance = currDistance - 100
-            volume = volume + 1000
-            idx = idx + 1
+    for i = 0, zombieList:size() - 1 do
+        local zed = zombieList:get(i)
+        local zx, zy = zed:getX(), zed:getY()
+        if RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then
+            zed:pathToLocationF(targetX + offsetX, targetY + offsetY, 0)
         end
     end
-
-    local offsetX, offsetY = ZombRandBetween(-offset, offset), ZombRandBetween(-offset, offset)
-    local x, y = targetX + offsetX, targetY + offsetY
-    makeNoise(player, x, y, hordeDistance * 2, volume + 1000)
 end
 
+function RHR_MOD.CalmPhaseEventNoise(targetX, targetY, hordeDistance)
+    calmSoundIdx = makeCalmGatherNoise(calmSoundIdx, targetX, targetY, hordeDistance, 10000)
+end
+
+function RHR_MOD.StormPhaseEventNoise(targetX, targetY, offset, hordeDistance, phaseUpdateFreq)
+    stormSoundIdx = makeStormGatherNoise(stormSoundIdx, phaseUpdateFreq, targetX, targetY, 110, hordeDistance*2, 10000)
+
+    local offsetX, offsetY = ZombRandBetween(-offset, offset), ZombRandBetween(-offset, offset)
+    redirectLoadedZombie(targetX, targetY, offsetX, offsetY, 120)
+end

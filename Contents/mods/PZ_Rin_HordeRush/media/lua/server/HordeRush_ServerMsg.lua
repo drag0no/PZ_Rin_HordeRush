@@ -17,6 +17,24 @@ local function sendCommand(commandName, commandArgs)
     end
 end
 
+function RHR_MOD.OnClientCommand(module, command, player, args)
+    if module ~= "HordeRush" then return end
+    if not (RHR_MOD.IsSinglePlayer() or RHR_MOD.IsServerAdmin(player)) then
+        serverLog("Attempt to execute a server command from non-admin account!")
+        return
+    end
+
+    if command == "SetCounter" then
+        if type(args.value) ~= "number" then
+            serverLog("SetCounter: Wrong value: " .. tostring(args.value))
+            return
+        end
+
+        RHR_MOD.SModData.Counter = args.value
+        RHR_MOD.Log("SetCounter: " .. player:getUsername() .. " set the Counter to: " .. tostring(args.value))
+    end
+end
+
 function RHR_MOD.CheckPhase()
     RHR_MOD.SModData.LogCounter = RHR_MOD.SModData.LogCounter + 1
     -- Avoid overflow
@@ -46,7 +64,7 @@ function RHR_MOD.CheckPhase()
             return
         end
         if not RHR_MOD.IsSinglePlayer() then
-            RHR_MOD.CalmPhaseEventNoise(player, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
+            RHR_MOD.CalmPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance)
         end
         sendCommand("CalmPhaseUpdate", dataSet)
         serverLog("CheckPhase: The storm phase begins in " .. tostring(RHR_MOD.MinutesToHours(calmPhase - counter)) .. " in-game hours")
@@ -58,7 +76,7 @@ function RHR_MOD.CheckPhase()
             return
         end
         if not RHR_MOD.IsSinglePlayer() then
-            RHR_MOD.StormPhaseEventNoise(player, RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.PlayerPositionOffset, RHR_MOD.SSandboxVars.HordeDistance)
+            RHR_MOD.StormPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.PlayerPositionOffset, RHR_MOD.SSandboxVars.HordeDistance, RHR_MOD.SSandboxVars.PhaseUpdateFrequency)
         end
         sendCommand("StormPhaseUpdate", dataSet)
         serverLog("CheckPhase: The cooldown phase begins in " .. tostring(RHR_MOD.MinutesToHours(stormPhase - counter)) .. " in-game hours")
@@ -78,5 +96,6 @@ end
 if not isClient() then
     Events.OnServerStarted.Add(RHR_MOD.OnServerLoad) -- multi player
     Events.OnLoad.Add(RHR_MOD.OnServerLoad) -- single player
+    Events.OnClientCommand.Add(RHR_MOD.OnClientCommand)
     Events.EveryOneMinute.Add(RHR_MOD.CheckPhase)
 end
