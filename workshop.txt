@@ -16,7 +16,7 @@ description=
 description=[b]"Horde Rush"[/b] is a survival-focused mod designed to keep you on your toes and test your base defenses when you least expect it... Are you prepared to hold the line?
 description=
 description=
-description=[h2]PREREQUISITES[/h2]
+description=[h2] PREREQUISITES [/h2]
 description=
 description=For this mod to function correctly, you must adjust a few specific Sandbox Options.
 description=
@@ -38,11 +38,14 @@ description=Population Peak Multiplier = 1.5
 description=[/code]
 description=
 description=[b]3. Increase Sound Follow Distance[/b]
-description=Zombies need to be allowed to travel long distances when they hear the any in-game events' sounds.
+description=Zombies need to be allowed to travel long distances when they hear any in-game events' sounds.
 description=[code]
 description=Follow Sound Distance = 450
 description=[/code]
-description=[i](Note: If you set the "Horde Radius" in the mod options higher than 450, you must increase this sandbox value to match it!)[/i]
+description=[i]Note: If you set the "Horde Distance" in the mod options higher than 300, you must increase this sandbox value to match it using formula:[/i]
+description=[code]
+description=Follow Sound Distance = Horde Distance * 1.42
+description=[/code]
 description=
 description=
 description=[h2] HOW IT WORKS [/h2]
@@ -58,7 +61,7 @@ description=* [b]The 'Cooldown' Phase[/b] - The time between events. Gameplay is
 description=
 description=* [b]The 'Calm' Phase[/b] - The period in which mass zombie migration occurs. Towns and cities will seem deserted and eerily quiet. This gives players the opportunity to scavenge and build defenses before the inevitable horde arrives.
 description=
-description=* [b]The 'Storm' Phase[/b] - Zombies return in massive hordes and persistently hunt down the player(s). Zombies are, by default, always aware of the player's position, which can be changed in the sandbox menu.
+description=* [b]The 'Storm' Phase[/b] - Zombies return in massive hordes and persistently hunt down the player(s). It will take some time... quite some time for the horde to actually march toward your location, providing a window to prepare your defenses. The event begins with smaller waves of stragglers and escalates into larger groups as the main horde arrives. Zombies are, by default, always aware of the player's position, which can be changed in the sandbox options.
 description=
 description=
 description=[h2] FOUND AN ISSUE? [/h2]
