@@ -32,8 +32,8 @@ option HordeRush.StormAlertMessage
 option HordeRush.HordeDistance
 {
     type = integer,
-    min = 0,
-    max = 10000,
+    min = 150,
+    max = 600,
     default = 300,
     page = HordeRush,
     translation = HordeDistance,
@@ -42,7 +42,7 @@ option HordeRush.HordeDistance
 option HordeRush.MinCooldownPhaseDuration
 {
     type = double,
-    min = 0.0,
+    min = 24.0,
     max = 87600.0,
     default = 168.0,
     page = HordeRush,
@@ -52,7 +52,7 @@ option HordeRush.MinCooldownPhaseDuration
 option HordeRush.MaxCooldownPhaseDuration
 {
     type = double,
-    min = 0.0,
+    min = 24.0,
     max = 87600.0,
     default = 336.0,
     page = HordeRush,
@@ -62,7 +62,7 @@ option HordeRush.MaxCooldownPhaseDuration
 option HordeRush.MinCalmPhaseDuration
 {
     type = double,
-    min = 0.0,
+    min = 24.0,
     max = 87600.0,
     default = 48.0,
     page = HordeRush,
@@ -72,7 +72,7 @@ option HordeRush.MinCalmPhaseDuration
 option HordeRush.MaxCalmPhaseDuration
 {
     type = double,
-    min = 0.0,
+    min = 24.0,
     max = 87600.0,
     default = 96.0,
     page = HordeRush,
@@ -82,9 +82,9 @@ option HordeRush.MaxCalmPhaseDuration
 option HordeRush.MinStormPhaseDuration
 {
     type = double,
-    min = 0.0,
+    min = 24.0,
     max = 87600.0,
-    default = 18.0,
+    default = 24.0,
     page = HordeRush,
     translation = MinStormPhaseDuration,
 }
@@ -92,9 +92,9 @@ option HordeRush.MinStormPhaseDuration
 option HordeRush.MaxStormPhaseDuration
 {
     type = double,
-    min = 0.0,
+    min = 24.0,
     max = 87600.0,
-    default = 30.0,
+    default = 48.0,
     page = HordeRush,
     translation = MaxStormPhaseDuration,
 }
@@ -111,8 +111,8 @@ option HordeRush.PlayerPositionOffset {
 option HordeRush.PhaseUpdateFrequency {
     type = integer,
     min = 1,
-    max = 525600,
-    default = 5,
+    max = 60,
+    default = 1,
     page = HordeRush,
     translation = PhaseUpdateFrequency,
 }
@@ -120,7 +120,7 @@ option HordeRush.PhaseUpdateFrequency {
 option HordeRush.LoggingFrequency {
     type = integer,
     min = 1,
-    max = 525600,
+    max = 720,
     default = 60,
     page = HordeRush,
     translation = LoggingFrequency,

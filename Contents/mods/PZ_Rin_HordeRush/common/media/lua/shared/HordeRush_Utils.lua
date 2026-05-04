@@ -27,12 +27,17 @@ function RHR_MOD.GetDistance(player, targetX, targetY)
     return math.sqrt(dx * dx + dy * dy)
 end
 
-function RHR_MOD.GetHordeSquare(x, y, hordeDistance)
-    local xMin = x - hordeDistance
-    local xMax = x + hordeDistance
-    local yMin = y - hordeDistance
-    local yMax = y + hordeDistance
+function RHR_MOD.GetSquare(x, y, distance)
+    local xMin = x - distance
+    local xMax = x + distance
+    local yMin = y - distance
+    local yMax = y + distance
     return xMin, xMax, yMin, yMax
+end
+
+function RHR_MOD.IsInSquare(x, y, centerX, centerY, distance)
+    local xMin, xMax, yMin, yMax = RHR_MOD.GetSquare(centerX, centerY, distance)
+    return  x >= xMin and x <= xMax and y >= yMin and y <= yMax
 end
 
 function RHR_MOD.IsPlayerInHordeArea(player, targetX, targetY, hordeDistance, mult)
@@ -43,7 +48,6 @@ function RHR_MOD.IsPlayerInHordeArea(player, targetX, targetY, hordeDistance, mu
 
     local x = playerSquare:getX()
     local y = playerSquare:getY()
-    local xMin, xMax, yMin, yMax = RHR_MOD.GetHordeSquare(targetX, targetY, hordeDistance * mult)
 
-    return  x >= xMin and x <= xMax and y >= yMin and y <= yMax
+    return RHR_MOD.IsInSquare(x, y, targetX, targetY, hordeDistance * mult)
 end

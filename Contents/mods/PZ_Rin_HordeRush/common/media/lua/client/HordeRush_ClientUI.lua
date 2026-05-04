@@ -9,6 +9,56 @@ local function createIcon(x, y, width, height, texture)
     return obj
 end
 
+local function sendSetCounterValue(player, value)
+    if not value or value < 0 then
+        player:Say("Error: Not a valid Counter number.")
+        return
+    end
+
+    sendClientCommand(player, "HordeRush", "SetCounter", {value = value})
+    if value == 0 then
+        player:Say("Counter has been reset.")
+    else
+        player:Say("Counter set to: " .. tostring(value))
+    end
+end
+
+
+function RHR_MOD.OnFillWorldObjectContextMenu(playerNum, context, _, _)
+    local player = getSpecificPlayer(playerNum)
+    if not (RHR_MOD.IsSinglePlayer() or RHR_MOD.IsServerAdmin(player)) then return end
+
+    local adminOption = context:addOption("Horde Rush Admin")
+    local subMenu = ISContextMenu:getNew(context)
+    context:addSubMenu(adminOption, subMenu)
+
+    subMenu:addOption("Reset Phase Counter", player, function()
+        sendSetCounterValue(player, 0)
+    end)
+
+    subMenu:addOption("Set Phase Counter", player, function()
+        -- Calculate screen center for the text box
+        local core = getCore()
+        local x = (core:getScreenWidth() / 2) - 140
+        local y = (core:getScreenHeight() / 2) - 90
+
+        -- Create and display the input box
+        local modal = ISTextBox:new(x, y, 280, 180, "Enter new value for Counter:", "0", nil,
+            function (_, button, _, _)
+                if button.internal ~= "OK" then return end
+
+                local textValue = button.parent.entry:getText()
+                local floatValue = tonumber(textValue)
+                sendSetCounterValue(player, floatValue)
+            end,
+            playerNum, "SetCounter"
+        )
+
+        modal:initialise()
+        modal:addToUIManager()
+    end)
+end
+
 function RHR_MOD.UISetup()
     local screenWidth = getCore():getScreenWidth()
     local x, y, width, height = screenWidth - 210, 12, 32, 32
@@ -35,3 +85,4 @@ end
 
 Events.OnCreateUI.Add(RHR_MOD.UISetup)
 Events.EveryOneMinute.Add(RHR_MOD.UIUpdate)
+Events.OnFillWorldObjectContextMenu.Add(RHR_MOD.OnFillWorldObjectContextMenu)
