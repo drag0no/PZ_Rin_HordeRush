@@ -4,6 +4,7 @@ require "HordeRush_Utils"
 local WorldSoundManager = getWorldSoundManager()
 
 local calmSoundIdx = 0
+local stormSoundIdx = 0
 local tickCounter = 0
 local tracking = {
     active = false,
@@ -33,15 +34,36 @@ local function makeCalmGatherNoise(soundIdx, targetX, targetY, hordeDistance, vo
     return checkIdx
 end
 
-local function makeStormNoise(targetX, targetY, hordeDistance, volume)
-    makeWorldNoise(targetX, targetY, hordeDistance * 1.5, volume)
+local function makeStormGatherNoise(soundIdx, phaseUpdateFreq, targetX, targetY, hordeDistance, pulseRadius, volume)
+    local x1, x2, y1, y2 = RHR_MOD.GetSquare(targetX, targetY, hordeDistance)
+
+    local cycleLength = math.ceil(240 / phaseUpdateFreq)
+    local cycleHalf = math.floor(cycleLength / 4)
+
+    local checkIdx = (soundIdx + 1) % cycleLength
+    if checkIdx < cycleHalf then
+        makeWorldNoise(x1, y1, pulseRadius, volume)
+    elseif checkIdx < cycleHalf * 2 then
+        makeWorldNoise(x2, y2, pulseRadius, volume)
+    elseif checkIdx < cycleHalf * 3 then
+        makeWorldNoise(x1, y2, pulseRadius, volume)
+    else
+        makeWorldNoise(x2, y1, pulseRadius, volume)
+    end
+    return checkIdx
+end
+
+local function makeStormInnerNoise(targetX, targetY, offset)
+    local offsetX = offset > 0 and ZombRandBetween(-offset, offset) or 0
+    local offsetY = offset > 0 and ZombRandBetween(-offset, offset) or 0
+    makeWorldNoise(targetX + offsetX, targetY + offsetY, 150, 20000)
 end
 
 local function processZombieRedirect(zed, targetX, targetY, offset, distance)
-    if not zed or not zed:isAlive() then return end
+    if not zed:isAlive() then return end
     if zed:getTarget() ~= nil then return end
     if zed:isMoving() then return end
-    if zed:getThumpTarget() then return end
+    if zed:getThumpTarget() ~= nil then return end
 
     local zx, zy = zed:getX(), zed:getY()
     if not RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then return end
@@ -68,8 +90,9 @@ function RHR_MOD.CalmPhaseEventNoise(targetX, targetY, hordeDistance)
     calmSoundIdx = makeCalmGatherNoise(calmSoundIdx, targetX, targetY, hordeDistance, 10000)
 end
 
-function RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq)
-    makeStormNoise(targetX, targetY, hordeDistance, 10000)
+function RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq, offset)
+    stormSoundIdx = makeStormGatherNoise(stormSoundIdx, phaseUpdateFreq, targetX, targetY, 110, hordeDistance * 2, 10000)
+    makeStormInnerNoise(targetX, targetY, offset or tracking.offset or 0)
 end
 
 function RHR_MOD.SetTracking(targetX, targetY, offset)

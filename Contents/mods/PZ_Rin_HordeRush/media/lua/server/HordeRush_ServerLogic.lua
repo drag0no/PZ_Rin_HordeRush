@@ -122,5 +122,5 @@ function RHR_MOD.ServerStormPhaseUpdate()
     if RHR_MOD.IsSinglePlayer() then return end
 
     RHR_MOD.SetTracking(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.PlayerPositionOffset)
-    RHR_MOD.StormPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance, RHR_MOD.SSandboxVars.PhaseUpdateFrequency)
+    RHR_MOD.StormPhaseEventNoise(RHR_MOD.SModData.PlayerX, RHR_MOD.SModData.PlayerY, RHR_MOD.SSandboxVars.HordeDistance, RHR_MOD.SSandboxVars.PhaseUpdateFrequency, RHR_MOD.SSandboxVars.PlayerPositionOffset)
 end
