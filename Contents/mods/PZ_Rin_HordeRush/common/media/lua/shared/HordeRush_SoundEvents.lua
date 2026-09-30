@@ -40,7 +40,8 @@ end
 local function processZombieRedirect(zed, targetX, targetY, offset, distance)
     if not zed or not zed:isAlive() then return end
     if zed:getTarget() ~= nil then return end
-    if zed:isMoving() or zed:isThumping() then return end
+    if zed:isMoving() then return end
+    if zed:getThumpTarget() then return end
 
     local zx, zy = zed:getX(), zed:getY()
     if not RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then return end
