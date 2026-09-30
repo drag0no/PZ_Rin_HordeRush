@@ -5,6 +5,7 @@ local WorldSoundManager = getWorldSoundManager()
 
 local calmSoundIdx = 0
 local stormSoundIdx = 0
+local tickCounter = 0
 local tracking = {
     active = false,
     targetX = 0,
@@ -54,14 +55,19 @@ local function makeStormGatherNoise(soundIdx, phaseUpdateFreq, targetX, targetY,
 end
 
 local function redirectLoadedZombie(targetX, targetY, offsetX, offsetY, distance)
-    local zombieList = getCell():getZombieList()
+    local cell = getCell()
+    if not cell then return end
+
+    local zombieList = cell:getZombieList()
     if not zombieList then return end
 
     for i = 0, zombieList:size() - 1 do
         local zed = zombieList:get(i)
-        local zx, zy = zed:getX(), zed:getY()
-        if RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then
-            zed:pathToLocationF(targetX + offsetX, targetY + offsetY, 0)
+        if zed and zed:isAlive() then
+            local zx, zy = zed:getX(), zed:getY()
+            if RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then
+                zed:pathToLocationF(targetX + offsetX, targetY + offsetY, 0)
+            end
         end
     end
 end
@@ -84,10 +90,15 @@ end
 
 function RHR_MOD.ClearTracking()
     tracking.active = false
+    tickCounter = 0
 end
 
 function RHR_MOD.TrackOnTick()
     if not tracking.active then return end
+
+    tickCounter = tickCounter + 1
+    if tickCounter % 30 ~= 0 then return end
+
     redirectLoadedZombie(tracking.targetX, tracking.targetY, tracking.offsetX, tracking.offsetY, 120)
 end
 
