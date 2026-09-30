@@ -14,6 +14,16 @@ function RHR_MOD.IsServerAdmin(player)
     return access == "admin"
 end
 
+function RHR_MOD.HasAdminAccess(player)
+    if RHR_MOD.IsServerAdmin(player) then
+        return true
+    end
+    if RHR_MOD.IsSinglePlayer() and getDebug and getDebug() then
+        return true
+    end
+    return false
+end
+
 function RHR_MOD.GetDistance(player, targetX, targetY)
     if not player then return math.huge end
 

@@ -1,4 +1,5 @@
 require "HordeRush_Data"
+require "HordeRush_Utils"
 
 local function createIcon(x, y, width, height, texture)
     local obj = {}
@@ -26,7 +27,7 @@ end
 
 function RHR_MOD.OnFillWorldObjectContextMenu(playerNum, context, _, _)
     local player = getSpecificPlayer(playerNum)
-    if not (RHR_MOD.IsSinglePlayer() or RHR_MOD.IsServerAdmin(player)) then return end
+    if not RHR_MOD.HasAdminAccess(player) then return end
 
     local adminOption = context:addOption("Horde Rush Admin")
     local subMenu = ISContextMenu:getNew(context)

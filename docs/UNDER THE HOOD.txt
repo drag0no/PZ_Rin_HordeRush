@@ -37,3 +37,20 @@ During the [b]Storm[/b] phase, the mod redirects that gathered horde toward the 
 When the Storm phase begins, ALL players will see the `StormPhaseIcon`. However, ONLY players who are actually within the event area will hear the `StormAlertSound` and see the `StormAlertMessage` text marking the start of the attack.
 
 If the targeted player goes offline, the mod will attempt to pick another player in the event area who is closest to the offline player's last known coordinates. If there are no other players nearby, the mod will just continue targeting those last known coordinates.
+
+
+[h2]ADMIN & TESTING CONTROLS[/h2]
+
+If you want to test phase transitions or trigger a horde without waiting through the full cooldown duration, you can manipulate the internal `Counter` in real time:
+
+Right-click anywhere in the world and open the [b]Horde Rush Admin[/b] sub-menu:
+[list]
+  [*] [b]Reset Phase Counter:[/b] Instantly resets the Counter back to 0.
+  [*] [b]Set Phase Counter:[/b] Set the Counter to any arbitrary minute value (e.g., set it just before `Calm_End` to trigger the Storm phase immediately).
+[/list]
+
+[b]Access requirements:[/b]
+[list]
+  [*] [b]Multiplayer:[/b] Requires admin access level.
+  [*] [b]Single Player:[/b] Requires launching the game with the [code]-debug[/code] flag enabled so it does not disturb regular survival playthroughs.
+[/list]

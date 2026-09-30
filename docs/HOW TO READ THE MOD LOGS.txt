@@ -42,5 +42,7 @@ How to check if this matches your Sandbox Settings:
   [*] [b](Storm_End - Calm_End - Cooldown_End) / 60[/b] = Should match your Storm phase Sandbox value (in hours).
 [/list]
 
+[i]Tip: If you want to test or verify your logs without waiting in-game hours, admins in MP or players in Single Player running with [code]-debug[/code] can right-click anywhere in the world to open the "Horde Rush Admin" menu and manually change or reset the Counter.[/i]
+
 
 I hope this breakdown makes sense and helps you understand the mod better! Let me know if you have any questions! :)

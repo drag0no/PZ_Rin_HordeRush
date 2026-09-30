@@ -1,4 +1,5 @@
 require "HordeRush_Data"
+require "HordeRush_Utils"
 require "HordeRush_ServerLogic"
 require "HordeRush_SoundEvents"
 
@@ -19,7 +20,7 @@ end
 
 function RHR_MOD.OnClientCommand(module, command, player, args)
     if module ~= "HordeRush" then return end
-    if not (RHR_MOD.IsSinglePlayer() or RHR_MOD.IsServerAdmin(player)) then
+    if not RHR_MOD.HasAdminAccess(player) then
         serverLog("Attempt to execute a server command from non-admin account!")
         return
     end
