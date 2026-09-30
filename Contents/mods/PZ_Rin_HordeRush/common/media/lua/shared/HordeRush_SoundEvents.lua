@@ -6,6 +6,8 @@ local WorldSoundManager = getWorldSoundManager()
 local calmSoundIdx = 0
 local stormSoundIdx = 0
 local tickCounter = 0
+local staggerFlag = false
+local staggerCounter = 2
 local tracking = {
     active = false,
     targetX = 0,
@@ -59,14 +61,36 @@ local function makeStormInnerNoise(targetX, targetY, offset)
     makeWorldNoise(targetX + offsetX, targetY + offsetY, 150, 20000)
 end
 
+local function staggerGatherSound()
+    if not staggerFlag then return end
+
+    staggerCounter = staggerCounter - 1
+    if staggerCounter > 0 then return end
+
+    makeStormInnerNoise(tracking.targetX, tracking.targetY, tracking.offset)
+    staggerCounter = 2
+    staggerFlag = false
+end
+
 local function processZombieRedirect(zed, targetX, targetY, offset, distance)
     if not zed:isAlive() then return end
     if zed:getTarget() ~= nil then return end
-    if zed:isMoving() then return end
     if zed:getThumpTarget() ~= nil then return end
 
     local zx, zy = zed:getX(), zed:getY()
     if not RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then return end
+
+    local dx = targetX - zx
+    local dy = targetY - zy
+    local distSq = dx * dx + dy * dy
+
+    local modData = zed:getModData()
+    local lastDistSq = modData.RHR_DistSq
+    modData.RHR_DistSq = distSq
+
+    if zed:isMoving() and lastDistSq and distSq < lastDistSq then
+        return
+    end
 
     local offsetX = offset > 0 and ZombRandBetween(-offset, offset) or 0
     local offsetY = offset > 0 and ZombRandBetween(-offset, offset) or 0
@@ -92,7 +116,7 @@ end
 
 function RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq, offset)
     stormSoundIdx = makeStormGatherNoise(stormSoundIdx, phaseUpdateFreq, targetX, targetY, 110, hordeDistance * 2, 10000)
-    makeStormInnerNoise(targetX, targetY, offset or tracking.offset or 0)
+    staggerFlag = true
 end
 
 function RHR_MOD.SetTracking(targetX, targetY, offset)
@@ -105,10 +129,14 @@ end
 function RHR_MOD.ClearTracking()
     tracking.active = false
     tickCounter = 0
+    staggerFlag = false
+    staggerCounter = 2
 end
 
 function RHR_MOD.TrackOnTick()
     if not tracking.active then return end
+
+    staggerGatherSound()
 
     tickCounter = tickCounter + 1
     if tickCounter < 30 then return end
