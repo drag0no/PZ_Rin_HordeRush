@@ -5,7 +5,6 @@ local WorldSoundManager = getWorldSoundManager()
 
 local calmSoundIdx = 0
 local stormSoundIdx = 0
-local tickCounter = 0
 local tracking = {
     active = false,
     targetX = 0,
@@ -90,15 +89,10 @@ end
 
 function RHR_MOD.ClearTracking()
     tracking.active = false
-    tickCounter = 0
 end
 
 function RHR_MOD.TrackOnTick()
     if not tracking.active then return end
-
-    tickCounter = tickCounter + 1
-    if tickCounter % 30 ~= 0 then return end
-
     redirectLoadedZombie(tracking.targetX, tracking.targetY, tracking.offsetX, tracking.offsetY, 120)
 end
 
