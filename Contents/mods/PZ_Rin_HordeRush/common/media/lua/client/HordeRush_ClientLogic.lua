@@ -72,5 +72,5 @@ function RHR_MOD.ClientStormPhaseUpdate()
     local hordeDistance = RHR_MOD.CSandboxVars.HordeDistance
     local phaseUpdateFreq =  RHR_MOD.CSandboxVars.PhaseUpdateFrequency
     RHR_MOD.SetTracking(targetX, targetY, offset)
-    RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq, offset)
+    RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq)
 end

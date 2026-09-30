@@ -5,9 +5,7 @@ local WorldSoundManager = getWorldSoundManager()
 
 local calmSoundIdx = 0
 local stormSoundIdx = 0
-local tickCounter = 0
-local staggerFlag = false
-local staggerCounter = 2
+local stabStormSound = -1
 local tracking = {
     active = false,
     targetX = 0,
@@ -55,21 +53,12 @@ local function makeStormGatherNoise(soundIdx, phaseUpdateFreq, targetX, targetY,
     return checkIdx
 end
 
-local function makeStormInnerNoise(targetX, targetY, offset)
-    local offsetX = offset > 0 and ZombRandBetween(-offset, offset) or 0
-    local offsetY = offset > 0 and ZombRandBetween(-offset, offset) or 0
-    makeWorldNoise(targetX + offsetX, targetY + offsetY, 150, 20000)
-end
-
-local function staggerGatherSound()
-    if not staggerFlag then return end
-
-    staggerCounter = staggerCounter - 1
-    if staggerCounter > 0 then return end
-
-    makeStormInnerNoise(tracking.targetX, tracking.targetY, tracking.offset)
-    staggerCounter = 2
-    staggerFlag = false
+local function makeStormInsideNoise(targetX, targetY)
+    if stabStormSound < 0 then return end
+    if stabStormSound == 0 then
+        makeWorldNoise(targetX, targetY, 175, 20000)
+    end
+    stabStormSound = stabStormSound - 1
 end
 
 local function processZombieRedirect(zed, targetX, targetY, offset, distance)
@@ -80,18 +69,14 @@ local function processZombieRedirect(zed, targetX, targetY, offset, distance)
     local zx, zy = zed:getX(), zed:getY()
     if not RHR_MOD.IsInSquare(zx, zy, targetX, targetY, distance) then return end
 
-    local dx = targetX - zx
-    local dy = targetY - zy
-    local distSq = dx * dx + dy * dy
-
     local modData = zed:getModData()
-    local lastDistSq = modData.RHR_DistSq
-    modData.RHR_DistSq = distSq
-
-    if zed:isMoving() and lastDistSq and distSq < lastDistSq then
+    local cooldown = modData.RHR_Cooldown or 0
+    if cooldown > 0 then
+        modData.RHR_Cooldown = cooldown - 1
         return
     end
 
+    modData.RHR_Cooldown = ZombRandBetween(35, 55)
     local offsetX = offset > 0 and ZombRandBetween(-offset, offset) or 0
     local offsetY = offset > 0 and ZombRandBetween(-offset, offset) or 0
     zed:pathToLocationF(targetX + offsetX, targetY + offsetY, 0)
@@ -114,9 +99,9 @@ function RHR_MOD.CalmPhaseEventNoise(targetX, targetY, hordeDistance)
     calmSoundIdx = makeCalmGatherNoise(calmSoundIdx, targetX, targetY, hordeDistance, 10000)
 end
 
-function RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq, offset)
+function RHR_MOD.StormPhaseEventNoise(targetX, targetY, hordeDistance, phaseUpdateFreq)
     stormSoundIdx = makeStormGatherNoise(stormSoundIdx, phaseUpdateFreq, targetX, targetY, 110, hordeDistance * 2, 10000)
-    staggerFlag = true
+    stabStormSound = 2
 end
 
 function RHR_MOD.SetTracking(targetX, targetY, offset)
@@ -128,20 +113,12 @@ end
 
 function RHR_MOD.ClearTracking()
     tracking.active = false
-    tickCounter = 0
-    staggerFlag = false
-    staggerCounter = 2
+    stabStormSound = -1
 end
 
 function RHR_MOD.TrackOnTick()
     if not tracking.active then return end
-
-    staggerGatherSound()
-
-    tickCounter = tickCounter + 1
-    if tickCounter < 30 then return end
-    tickCounter = 0
-
+    makeStormInsideNoise(tracking.targetX, tracking.targetY)
     redirectLoadedZombie(tracking.targetX, tracking.targetY, tracking.offset, 120)
 end
 
