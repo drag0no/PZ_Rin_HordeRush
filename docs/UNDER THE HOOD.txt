@@ -1,0 +1,39 @@
+[h2]DISCLAIMER[/h2]
+
+Please avoid reading this topic if you don't want to spoil the immersion of the event.
+
+However, if you are trying to understand why the mod might not be behaving as expected for you, seeing how it operates under the hood should help clarify things.
+
+
+[h2]MUST READ[/h2]
+
+This guide assumes you are already familiar with the core phase concepts.
+
+Before diving in, please read this guide to understand what the log values mean: [url=https://steamcommunity.com/workshop/filedetails/discussion/3673979790/800090966741588440/]HOW TO READ THE MOD LOGS[/url]
+
+I will also be referencing Sandbox Options formatted `LikeThis`. To see a full breakdown of these settings, check out this guide: [url=https://steamcommunity.com/workshop/filedetails/discussion/3673979790/844004562473891003/]SANDBOX OPTIONS[/url]
+
+
+[h2]BASICS[/h2]
+
+First, as a quick reminder: [b]this mod doesn't spawn ANY zombies at any time[/b]. It only manipulates the zombies that already exist in the world by generating loud noises.
+
+If you have completely killed all the zombies in a town and the surrounding area is empty, there will be NO zombies to attack you during a Horde event.
+
+To ensure consistent events, make sure your zombie respawn is turned on (read "PREREQUISITES" section of the mod description).
+
+
+[h2]PHASES LOGIC[/h2]
+
+When the game initializes, the mod determines the duration of each phase in in-game minutes. It saves these parameters and outputs them in your logs like this:
+[code]Counter=43799 / Phases=[43425|46643|47297][/code]
+
+During the [b]Cooldown[/b] phase, the mod literally does nothing. It just ticks up its internal `Counter` every in-game minute to track the current phase.
+
+During the [b]Calm[/b] phase, the mod randomly chooses one online player. It begins gathering zombies `Distance` squares away from that player in the NW, NE, SE and SW corners. It achieves this by generating a massive sound (which players cannot hear) every `PhaseUpdateFrequency` in-game minutes.
+
+During the [b]Storm[/b] phase, the mod redirects that gathered horde toward the player. It does this by making loud noises on the edged of the player's render distance. Once zombies enter the render distance, they start tracking player within `PlayerPositionOffset` radius around him/her, again triggering every `PhaseUpdateFrequency` in-game minutes.
+
+When the Storm phase begins, ALL players will see the `StormPhaseIcon`. However, ONLY players who are actually within the event area will hear the `StormAlertSound` and see the `StormAlertMessage` text marking the start of the attack.
+
+If the targeted player goes offline, the mod will attempt to pick another player in the event area who is closest to the offline player's last known coordinates. If there are no other players nearby, the mod will just continue targeting those last known coordinates.

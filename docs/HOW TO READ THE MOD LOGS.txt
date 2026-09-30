@@ -1,0 +1,46 @@
+Hey folks! I’ve noticed some questions about how the mod behaves under the hood, so I put together this quick guide to help you decipher the mod's log lines.
+
+Hopefully, this makes it easier to understand the background logic and, if you spot an issue, makes it easier to grab the right info to report on my GitHub! 😉
+
+First off, I split the logging into [b]Server-side[/b] and [b]Client-side[/b]. They are mostly identical, though the client logs have one extra parameter. If you are troubleshooting, [b]the Server logs are the most important ones to check.[/b]
+
+Here is how to read them:
+
+
+[b]1. Phase Update Announcement[/b]
+[code]LOG  : General      , 1773864044215> 301,744,365> [RHR] Server Sent: CalmPhaseUpdate[/code]
+This line shows exactly which phase update the server just broadcasted to all players. The client-side logs will have a separate line acknowledging that they received it.
+
+
+[b]2. Human-Readable Timer[/b]
+[code]LOG  : General      , 1773864044215> 301,744,365> [RHR] CheckPhase: The storm phase begins in 47.4 in-game hours[/code]
+A nice, easy-to-read countdown telling you exactly when the next phase kicks off!
+
+
+[b]3. The Core Logic & Counters[/b]
+[code]LOG  : General      , 1773864044215> 301,744,365> [RHR] CheckPhase: Counter=43799 / Phases=[43425|46643|47297] / PlayerName=WindGhost / PlayerCoords=[13701,10115][/code]
+This is the meat of the logic. (Note: The client-side version of this line includes an extra parameter called `Phase` which shows their current local state: 0 = Cooldown, 1 = Calm, 2 = Storm).
+
+Here is what these variables mean:
+[list]
+  [*] [b]Counter:[/b] The internal clock (in in-game minutes) tracking the current cycle.
+  [*] [b]Phases:[/b] These three numbers represent the exact minute each phase ends: [b][ Cooldown_End | Calm_End | Storm_End ][/b]
+[/list]
+
+How the server knows which phase it is in:
+[list]
+  [*] IF Counter <= [b]Cooldown_End[/b] THEN server is in Cooldown.
+  [*] IF Counter > [b]Cooldown_End[/b] AND < [b]Calm_End[/b] THEN server is in Calm.
+  [*] IF Counter > [b]Calm_End[/b] AND < [b]Storm_End[/b] THEN server is in Storm.
+  [*] ONCE Counter > [b]Storm_End[/b] THEN the cycle resets, Counter goes back to 0, and all values are recalculated!
+[/list]
+
+How to check if this matches your Sandbox Settings:
+[list]
+  [*] [b]Cooldown_End / 60[/b] = Should match your Cooldown phase Sandbox value (in hours).
+  [*] [b](Calm_End - Cooldown_End) / 60[/b] = Should match your Calm phase Sandbox value (in hours).
+  [*] [b](Storm_End - Calm_End - Cooldown_End) / 60[/b] = Should match your Storm phase Sandbox value (in hours).
+[/list]
+
+
+I hope this breakdown makes sense and helps you understand the mod better! Let me know if you have any questions! :)

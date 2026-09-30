@@ -1,0 +1,55 @@
+[b]CalmPhaseIcon / Enable Calm Phase Icon[/b]
+Shows the icon for the calm phase when this phase is in place.
+[i]Default Value: false[/i]
+
+[b]StormPhaseIcon / Enable Storm Phase Icon[/b]
+Shows the icon for the storm phase when this phase is in place.
+[i]Default Value: true[/i]
+
+[b]StormAlertSound / Enable Sound Effects[/b]
+Allows the sound effects to played at the start of the storm phase.
+[i]Default Value: true[/i]
+
+[b]StormAlertMessage / Horde Alert Message[/b]
+The message that will appear above the player's head when the storm phase begins (leave empty to disable).
+[i]Default Value: A low deafening rumble shakes the ground... the dead are marching.[/i]
+
+[b]HordeDistance / Horde Distance[/b]
+Number of tiles away from the player the hordes will form.
+[i]Default Value: 300[/i]
+
+[b]MinCooldownPhaseDuration / Minimum Cooldown Phase Duration[/b]
+The minimum number of in-game hours before the calm phase starts.
+[i]Default Value: 168[/i]
+
+[b]MaxCooldownPhaseDuration / Maximum Cooldown Phase Duration[/b]
+The maximum number of in-game hours before the calm phase starts.
+[i]Default Value: 336[/i]
+
+[b]MinCalmPhaseDuration / Minimum Calm Phase Duration[/b]
+The minimum number of in-game hours the zombies will spend forming hordes before the storm phase.
+[i]Default Value: 48[/i]
+
+[b]MaxCalmPhaseDuration / Maximum Calm Phase Duration[/b]
+The maximum number of in-game hours the zombies will spend forming hordes before the storm phase.
+[i]Default Value: 96[/i]
+
+[b]MinStormPhaseDuration / Minimum Storm Phase Duration[/b]
+The minimum number of in-game hours the zombies will spend hunting survivors during the storm phase.
+[i]Default Value: 24[/i]
+
+[b]MaxStormPhaseDuration / Maximum Storm Phase Duration[/b]
+The maximum number of in-game hours the zombies will spend hunting survivors during the storm phase.
+[i]Default Value: 48[/i]
+
+[b]PlayerPositionOffset / Horde Scatter[/b]
+Offsets the target position relative to the player by a random value between zero and the specified value. This makes hordes look less clumped together and more uncoordinated.
+[i]Default Value: 0[/i]
+
+[b]PhaseUpdateFrequency / Phase Update Frequency[/b]
+Interval between zombie attraction updates for specified phase (in-game minutes).
+[i]Default Value: 1[/i]
+
+[b]LoggingFrequency / Logging Frequency[/b]
+Interval between printing debug information into the logs (in-game minutes).
+[i]Default Value: 60[/i]
